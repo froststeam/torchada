@@ -251,7 +251,10 @@ class TestCUDAGraph:
         import torchada
 
         assert hasattr(torch.cuda, "CUDAGraph")
-        assert hasattr(torch.cuda, "MUSAGraph")
+        # MUSAGraph only exists on MUSA platform (torch_musa specific class)
+        # On CUDA platforms, only CUDAGraph exists
+        if torchada.is_musa_platform():
+            assert hasattr(torch.cuda, "MUSAGraph")
 
     def test_cuda_graph_is_musa_graph(self):
         """Test torch.cuda.CUDAGraph is aliased to MUSAGraph on MUSA."""
@@ -320,7 +323,11 @@ class TestCUDAGraph:
         # Should accept cuda_graph= keyword argument
         ctx = torch.cuda.graph(cuda_graph=g)
         assert ctx is not None
-        assert hasattr(ctx, "_wrapped")
+        # _wrapped attribute only exists on MUSA platform where torchada wraps
+        # the context manager to translate cuda_graph= to musa_graph=
+        # On CUDA platforms, no wrapping is needed
+        if torchada.is_musa_platform():
+            assert hasattr(ctx, "_wrapped")
 
     def test_graph_context_manager_positional(self):
         """Test torch.cuda.graph accepts positional argument."""
@@ -343,6 +350,11 @@ class TestCUDAGraph:
 
         import torchada
 
+        # This test only applies on MUSA platform where musa_graph= is valid
+        # On CUDA platforms, only cuda_graph= keyword is valid (no musa_graph=)
+        if not torchada.is_musa_platform():
+            pytest.skip("musa_graph= keyword only valid on MUSA platform")
+
         if torch.cuda.device_count() == 0:
             pytest.skip("No GPU available")
 
@@ -358,7 +370,10 @@ class TestCUDAGraph:
 
         import torchada  # noqa: F401
 
-        with pytest.raises(TypeError, match="missing required argument"):
+        # Error message differs between CUDA and MUSA platforms
+        with pytest.raises(
+            TypeError, match="(missing required argument|required positional argument)"
+        ):
             torch.cuda.graph()
 
     def test_graph_context_manager_with_pool_and_stream(self):
@@ -878,6 +893,11 @@ class TestAutotuneProcess:
         except ImportError:
             pytest.skip("torch._inductor.autotune_process not available")
 
+        # CUDA_VISIBLE_DEVICES constant was added in PyTorch 2.2.0
+        # It does NOT exist in PyTorch 2.1.x and earlier versions
+        if not hasattr(autotune_process, "CUDA_VISIBLE_DEVICES"):
+            pytest.skip("CUDA_VISIBLE_DEVICES not available (requires PyTorch >= 2.2.0)")
+
         if torchada.is_musa_platform():
             # On MUSA platform, CUDA_VISIBLE_DEVICES should be patched to MUSA_VISIBLE_DEVICES
             assert autotune_process.CUDA_VISIBLE_DEVICES == "MUSA_VISIBLE_DEVICES"
@@ -894,6 +914,11 @@ class TestAutotuneProcess:
         except ImportError:
             pytest.skip("torch._inductor.autotune_process not available")
 
+        # CUDA_VISIBLE_DEVICES constant was added in PyTorch 2.2.0
+        # It does NOT exist in PyTorch 2.1.x and earlier versions
+        if not hasattr(autotune_process, "CUDA_VISIBLE_DEVICES"):
+            pytest.skip("CUDA_VISIBLE_DEVICES not available (requires PyTorch >= 2.2.0)")
+
         assert isinstance(autotune_process.CUDA_VISIBLE_DEVICES, str)
 
     def test_cuda_visible_devices_env_var_format(self):
@@ -904,6 +929,11 @@ class TestAutotuneProcess:
             import torch._inductor.autotune_process as autotune_process
         except ImportError:
             pytest.skip("torch._inductor.autotune_process not available")
+
+        # CUDA_VISIBLE_DEVICES constant was added in PyTorch 2.2.0
+        # It does NOT exist in PyTorch 2.1.x and earlier versions
+        if not hasattr(autotune_process, "CUDA_VISIBLE_DEVICES"):
+            pytest.skip("CUDA_VISIBLE_DEVICES not available (requires PyTorch >= 2.2.0)")
 
         env_var = autotune_process.CUDA_VISIBLE_DEVICES
         # Env var should be uppercase and use underscores
@@ -1096,6 +1126,12 @@ class TestIsCompiledAndBackends:
 
         import torchada  # noqa: F401 - ensure patches are applied
 
+        # fp32_precision is a torchada addition for MUSA compatibility
+        # It wraps torch.get/set_float32_matmul_precision() for convenient access
+        # This attribute does NOT exist in standard PyTorch on CUDA platforms
+        if not hasattr(torch.backends.cuda.matmul, "fp32_precision"):
+            pytest.skip("fp32_precision not available (torchada MUSA-specific attribute)")
+
         # Should be accessible
         original = torch.backends.cuda.matmul.fp32_precision
         assert original in ("highest", "high", "medium")
@@ -1135,7 +1171,11 @@ class TestProfilerActivity:
 
         assert hasattr(torch.profiler, "ProfilerActivity")
         assert hasattr(torch.profiler.ProfilerActivity, "CUDA")
-        assert hasattr(torch.profiler.ProfilerActivity, "PrivateUse1")
+        # ProfilerActivity.PrivateUse1 is MUSA-specific (for PrivateUse1 backend)
+        # This attribute does NOT exist in standard PyTorch on CUDA platforms
+        # torch_musa adds this to support profiling on MUSA GPUs
+        if torchada.is_musa_platform():
+            assert hasattr(torch.profiler.ProfilerActivity, "PrivateUse1")
 
     def test_profiler_with_cuda_activity(self):
         """Test profiler can be created with CUDA activity on MUSA."""
