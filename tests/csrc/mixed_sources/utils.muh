@@ -1,0 +1,31 @@
+/*
+ * MUSA header file - already ported version of utils.cuh.
+ * This file is used by .mu files directly.
+ */
+
+#pragma once
+
+#include <musa_runtime.h>
+
+namespace test_utils {
+
+// Simple device function for element-wise operations
+template <typename T>
+__device__ __forceinline__ T add_elements(T a, T b) {
+    return a + b;
+}
+
+template <typename T>
+__device__ __forceinline__ T mul_elements(T a, T b) {
+    return a * b;
+}
+
+// Check MUSA errors
+inline void check_musa_error(musaError_t err, const char* msg) {
+    if (err != musaSuccess) {
+        throw std::runtime_error(std::string(msg) + ": " + musaGetErrorString(err));
+    }
+}
+
+}  // namespace test_utils
+

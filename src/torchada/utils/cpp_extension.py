@@ -476,7 +476,7 @@ def _get_build_extension_class():
 
                     Returns:
                         tuple: (converted_path, needs_porting)
-                            - converted_path: Path to ported file (e.g., "csrc_musa/kernel.cu")
+                            - converted_path: Path to ported file (e.g., "csrc_musa/kernel.mu")
                             - needs_porting: True if the source directory needs porting
                     """
                     source_path = os.path.abspath(source)
@@ -494,6 +494,17 @@ def _get_build_extension_class():
                         musa_dir = source_dir + "_musa"
                         new_source = os.path.join(musa_dir, base_name + "." + new_ext)
                         return new_source, True
+                    # Handle .mu/.muh files that don't exist at original path
+                    # Try to find them in the _musa directory (already ported files)
+                    elif ext_name_lower in [".mu", ".muh"]:
+                        if not os.path.exists(source_path):
+                            musa_dir = source_dir + "_musa"
+                            musa_source = os.path.join(musa_dir, source_file)
+                            if os.path.exists(musa_source):
+                                # File exists in _musa dir, use it (no porting needed)
+                                return musa_source, False
+                        # File exists at original path, use it as-is
+                        return source, False
                     else:
                         return source, False
 

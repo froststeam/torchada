@@ -208,3 +208,194 @@ setup(
                     raise
             finally:
                 sys.path.remove(tmpdir)
+
+
+# Path to mixed sources test directory
+MIXED_SOURCES_DIR = os.path.join(CSRC_DIR, "mixed_sources")
+
+
+@pytest.mark.skipif(
+    not os.environ.get("TORCHADA_TEST_BUILD", "0") == "1",
+    reason="Extension build tests are slow; set TORCHADA_TEST_BUILD=1 to run",
+)
+class TestMixedSourcesBuild:
+    """
+    Test building extensions with mixed source types (.cu, .cuh, .mu, .muh, .cpp).
+
+    This tests the fix for the issue where .mu files required manually specifying
+    the ported path (e.g., csrc_musa/foo.mu instead of csrc/foo.mu).
+    """
+
+    def test_mixed_sources_dir_exists(self):
+        """Test that mixed_sources test directory exists."""
+        assert os.path.isdir(MIXED_SOURCES_DIR), f"Test dir not found: {MIXED_SOURCES_DIR}"
+
+    def test_all_source_files_exist(self):
+        """Test that all mixed source files exist."""
+        expected_files = [
+            "utils.cuh",  # CUDA header
+            "add_kernel.cu",  # CUDA kernel
+            "utils.muh",  # MUSA header (already ported)
+            "mul_kernel.mu",  # MUSA kernel (already ported)
+            "bindings.cpp",  # C++ bindings
+        ]
+        for f in expected_files:
+            path = os.path.join(MIXED_SOURCES_DIR, f)
+            assert os.path.exists(path), f"Source file not found: {path}"
+
+    def test_build_mixed_sources_extension(self):
+        """
+        Test building an extension with mixed .cu/.cuh/.mu/.muh/.cpp sources.
+
+        This is the key e2e test that verifies:
+        1. .cu files are ported to .mu in the _musa directory
+        2. .cuh files are ported to .muh in the _musa directory
+        3. .mu files that don't exist at original path are found in _musa directory
+        4. .muh files are handled correctly
+        5. .cpp files are ported for CUDA symbol translation
+        """
+        if not _is_gpu_available():
+            pytest.skip("CUDA/MUSA not available")
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Mixed sources test only applicable on MUSA platform")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Copy all source files to temp directory, preserving structure
+            src_dir = os.path.join(tmpdir, "csrc")
+            shutil.copytree(MIXED_SOURCES_DIR, src_dir)
+
+            # Create setup.py that uses CUDA-style paths for .mu files
+            # This tests the fix: users can specify csrc/mul_kernel.mu
+            # and torchada will find it in csrc_musa/mul_kernel.mu after porting
+            setup_content = """
+import torchada  # noqa: F401 - Apply MUSA patches
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_mixed_sources",
+    ext_modules=[
+        CUDAExtension(
+            name="test_mixed_sources",
+            sources=[
+                "csrc/bindings.cpp",      # C++ file with CUDA symbols
+                "csrc/add_kernel.cu",     # CUDA kernel -> ported to csrc_musa/add_kernel.mu
+                "csrc/mul_kernel.mu",     # MUSA kernel -> found in csrc_musa/mul_kernel.mu
+            ],
+            include_dirs=["csrc"],        # Include dir for headers
+        )
+    ],
+    cmdclass={"build_ext": BuildExtension},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build the extension
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+                timeout=300,  # 5 minute timeout
+            )
+
+            if result.returncode != 0:
+                print("STDOUT:", result.stdout)
+                print("STDERR:", result.stderr)
+
+            assert result.returncode == 0, f"Build failed: {result.stderr}"
+
+            # Check that the extension was built
+            ext_files = [f for f in os.listdir(tmpdir) if f.endswith(".so") or f.endswith(".pyd")]
+            assert len(ext_files) > 0, "No extension file was built"
+
+            # Verify ported directory was created
+            ported_dir = os.path.join(tmpdir, "csrc_musa")
+            assert os.path.isdir(ported_dir), "Ported directory csrc_musa was not created"
+
+            # Verify ported files exist
+            assert os.path.exists(
+                os.path.join(ported_dir, "add_kernel.mu")
+            ), "add_kernel.cu was not ported to add_kernel.mu"
+            assert os.path.exists(
+                os.path.join(ported_dir, "utils.muh")
+            ), "utils.cuh was not ported to utils.muh"
+
+    def test_run_mixed_sources_extension(self):
+        """Test running the mixed sources extension after building."""
+        import torch
+
+        if not _is_gpu_available():
+            pytest.skip("CUDA/MUSA not available")
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Mixed sources test only applicable on MUSA platform")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Copy all source files
+            src_dir = os.path.join(tmpdir, "csrc")
+            shutil.copytree(MIXED_SOURCES_DIR, src_dir)
+
+            # Create setup.py
+            setup_content = """
+import torchada  # noqa: F401
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_mixed_sources",
+    ext_modules=[
+        CUDAExtension(
+            name="test_mixed_sources",
+            sources=[
+                "csrc/bindings.cpp",
+                "csrc/add_kernel.cu",
+                "csrc/mul_kernel.mu",
+            ],
+            include_dirs=["csrc"],
+        )
+    ],
+    cmdclass={"build_ext": BuildExtension},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+            assert result.returncode == 0, f"Build failed: {result.stderr}"
+
+            # Import and test
+            sys.path.insert(0, tmpdir)
+            try:
+                import test_mixed_sources
+
+                try:
+                    # Test add function (from .cu file)
+                    a = torch.randn(1000, device="cuda")
+                    b = torch.randn(1000, device="cuda")
+                    c = test_mixed_sources.add(a, b)
+                    expected = a + b
+                    assert torch.allclose(c, expected), "Add result incorrect"
+
+                    # Test mul function (from .mu file)
+                    d = test_mixed_sources.mul(a, b)
+                    expected_mul = a * b
+                    assert torch.allclose(d, expected_mul), "Mul result incorrect"
+
+                except RuntimeError as e:
+                    if "invalid device function" in str(e):
+                        pytest.skip("Kernel compiled for different architecture")
+                    raise
+            finally:
+                sys.path.remove(tmpdir)
