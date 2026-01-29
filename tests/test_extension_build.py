@@ -399,3 +399,107 @@ setup(
                     raise
             finally:
                 sys.path.remove(tmpdir)
+
+
+# Path to same_name test directory (tests .cu and .mu with same base name)
+SAME_NAME_DIR = os.path.join(CSRC_DIR, "same_name")
+
+
+@pytest.mark.skipif(
+    not os.environ.get("TORCHADA_TEST_BUILD", "0") == "1",
+    reason="Extension build tests are slow; set TORCHADA_TEST_BUILD=1 to run",
+)
+class TestSameNameFilePrecedence:
+    """
+    Test that .mu files take precedence over .cu files when both exist.
+
+    This tests the fix for the issue where SimplePorting's file processing
+    order is non-deterministic, causing either the ported .cu or original .mu
+    to end up in the _musa directory depending on which is processed last.
+
+    The fix ensures that original .mu/.muh files are always copied after
+    porting, so they take precedence over auto-ported .cu/.cuh files.
+    """
+
+    def test_same_name_dir_exists(self):
+        """Test that same_name test directory exists."""
+        assert os.path.isdir(SAME_NAME_DIR), f"Test dir not found: {SAME_NAME_DIR}"
+
+    def test_both_cu_and_mu_exist(self):
+        """Test that both kernel.cu and kernel.mu exist."""
+        cu_path = os.path.join(SAME_NAME_DIR, "kernel.cu")
+        mu_path = os.path.join(SAME_NAME_DIR, "kernel.mu")
+        assert os.path.exists(cu_path), f"kernel.cu not found: {cu_path}"
+        assert os.path.exists(mu_path), f"kernel.mu not found: {mu_path}"
+
+    def test_mu_file_takes_precedence(self):
+        """
+        Test that .mu file takes precedence when both .cu and .mu exist.
+
+        This is the key test: after porting, the csrc_musa/kernel.mu file
+        should contain the content from the original kernel.mu (magic number 123),
+        not the ported kernel.cu (magic number 42).
+        """
+        if not _is_gpu_available():
+            pytest.skip("CUDA/MUSA not available")
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Same name precedence test only applicable on MUSA platform")
+
+        import torch
+        from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create csrc directory and copy source files
+            csrc_dir = os.path.join(tmpdir, "csrc")
+            shutil.copytree(SAME_NAME_DIR, csrc_dir)
+
+            # Create setup.py that only specifies the .cu file
+            # (simulating user who wants to build CUDA code)
+            setup_content = f"""
+import torchada  # noqa: F401 - Apply MUSA patches
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_same_name",
+    ext_modules=[
+        CUDAExtension(
+            name="test_same_name",
+            sources=[
+                "csrc/bindings.cpp",
+                "csrc/kernel.cu",  # .mu file exists too - should take precedence
+            ],
+        )
+    ],
+    cmdclass={{"build_ext": BuildExtension}},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+            assert result.returncode == 0, f"Build failed: {result.stderr}"
+
+            # Check that csrc_musa/kernel.mu contains the MUSA version (magic 123)
+            ported_mu_path = os.path.join(tmpdir, "csrc_musa", "kernel.mu")
+            assert os.path.exists(ported_mu_path), f"Ported file not found: {ported_mu_path}"
+
+            with open(ported_mu_path, "r") as f:
+                content = f.read()
+                # The MUSA version returns 123, CUDA version returns 42
+                assert "return 123" in content, (
+                    f".mu file should take precedence but found ported .cu content. "
+                    f"Expected 'return 123' but got:\n{content}"
+                )
+                assert "return 42" not in content, (
+                    f"Found ported .cu content instead of original .mu. " f"Content:\n{content}"
+                )
