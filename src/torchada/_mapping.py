@@ -30,7 +30,6 @@ _MAPPING_RULE = {
     "#include <ATen/cuda/detail/UnpackRaw.cuh>": '#include "torch_musa/csrc/aten/musa/UnpackRaw.muh"',
     "#include <ATen/cuda/Exceptions.h>": '#include "torch_musa/csrc/aten/musa/Exceptions.h"',
     "at::cuda": "at::musa",
-    "torch::kCUDA": "torch::kMUSA",
     # File extension mappings for include statements (.cuh -> .muh)
     '.cuh"': '.muh"',
     ".cuh>": ".muh>",
@@ -63,12 +62,15 @@ _MAPPING_RULE = {
     "#include <cuda/": "#include <musa/",
     # =========================================================================
     # CUDA namespaces and device types
+    # Note: MUSA uses PrivateUse1 as its device type, not a separate MUSA type.
+    # torch_musa defines: constexpr DeviceType kMUSA = DeviceType::PrivateUse1;
+    # We use at::kPrivateUse1 which is available in standard PyTorch headers.
     # =========================================================================
     "torch::cuda": "torch::musa",
     "torch.cuda": "torch.musa",
-    "at::kCUDA": "at::kMUSA",
-    "at::DeviceType::CUDA": "at::DeviceType::MUSA",
-    "c10::DeviceType::CUDA": "c10::DeviceType::MUSA",
+    "at::kCUDA": "at::kPrivateUse1",
+    "at::DeviceType::CUDA": "at::DeviceType::PrivateUse1",
+    "c10::DeviceType::CUDA": "c10::DeviceType::PrivateUse1",
     # =========================================================================
     # cuBLAS -> muBLAS
     # =========================================================================
@@ -189,26 +191,35 @@ _MAPPING_RULE = {
     # =========================================================================
     # Data types
     # =========================================================================
-    # Note: __half and half are the same in MUSA, no mapping needed
+    # BFloat16 types (Note: __half and half are the same in MUSA, no mapping needed)
     "__nv_bfloat16": "__mt_bfloat16",
     "__nv_bfloat162": "__mt_bfloat162",
+    "__nv_half": "__half",
     "nv_bfloat16": "__mt_bfloat16",
     "nv_bfloat162": "__mt_bfloat162",
-    "__nv_half": "__half",
     "nv_half": "__half",
-    # FP8 data types
+    # FP8 data types - constants
     "__NV_E4M3": "__MT_E4M3",
     "__NV_E5M2": "__MT_E5M2",
     "__NV_SATFINITE": "__MT_SATFINITE",
-    "__nv_cvt_float2_to_fp8x2": "__musa_cvt_float2_to_fp8x2",
+    # FP8 data types - types (alphabetical)
     "__nv_fp8_e4m3": "__mt_fp8_e4m3",
     "__nv_fp8_e5m2": "__mt_fp8_e5m2",
+    "__nv_fp8_interpretation_t": "__mt_fp8_interpretation_t",
+    "__nv_fp8_storage_t": "__mt_fp8_storage_t",
     "__nv_fp8x2_e4m3": "__mt_fp8x2_e4m3",
     "__nv_fp8x2_e5m2": "__mt_fp8x2_e5m2",
     "__nv_fp8x2_storage_t": "__mt_fp8x2_storage_t",
     "__nv_fp8x4_e4m3": "__mt_fp8x4_e4m3",
     "__nv_fp8x4_e5m2": "__mt_fp8x4_e5m2",
     "__nv_fp8x4_storage_t": "__mt_fp8x4_storage_t",
+    # FP8 data types - conversion functions (alphabetical)
+    "__nv_cvt_bfloat16raw_to_fp8": "__musa_cvt_bfloat16raw_to_fp8",
+    "__nv_cvt_float2_to_fp8x2": "__musa_cvt_float2_to_fp8x2",
+    "__nv_cvt_float_to_fp8": "__musa_cvt_float_to_fp8",
+    "__nv_cvt_fp8_to_halfraw": "__musa_cvt_fp8_to_halfraw",
+    "__nv_cvt_fp8x2_to_halfraw2": "__musa_cvt_fp8x2_to_halfraw2",
+    # FP8 data types - includes and enums
     "#include <cuda_fp8.h>": "#include <musa_fp8.h>",
     "CUDA_R_8F_E4M3": "MUSA_R_8F_E4M3",
     "CUDA_R_8F_E5M2": "MUSA_R_8F_E5M2",
@@ -442,38 +453,60 @@ _MAPPING_RULE = {
     "torch::cuda::getCurrentCUDAStream": "torch::musa::getCurrentMUSAStream",
     "torch::cuda::getDefaultCUDAStream": "torch::musa::getDefaultMUSAStream",
     "torch::cuda::getStreamFromPool": "torch::musa::getStreamFromPool",
-    # torch::kCUDA maps to c10::DeviceType::PrivateUse1 (MUSA uses PrivateUse1)
-    "torch::kCUDA": "c10::DeviceType::PrivateUse1",
+    "torch::kCUDA": "torch::kPrivateUse1",
     "cudaDeviceIndex": "musaDeviceIndex",
     "CUDADeviceIndex": "MUSADeviceIndex",
     # =========================================================================
     # CUDA driver API -> MUSA driver API
     # =========================================================================
-    "CUdeviceptr": "MUdeviceptr",
-    "CUdevice": "MUdevice",
+    # Types (alphabetical)
     "CUcontext": "MUcontext",
-    "CUmodule": "MUmodule",
-    "CUfunction": "MUfunction",
-    "CUstream": "MUstream",
+    "CUdevice": "MUdevice",
+    "CUdeviceptr": "MUdeviceptr",
     "CUevent": "MUevent",
+    "CUfunction": "MUfunction",
+    "CUmemAccessDesc": "MUmemAccessDesc",
+    "CUmemAllocationProp": "MUmemAllocationProp",
+    "CUmemGenericAllocationHandle": "MUmemGenericAllocationHandle",
+    "CUmodule": "MUmodule",
     "CUresult": "MUresult",
-    "cuPointerGetAttribute": "muPointerGetAttribute",
-    "cuMemGetAddressRange": "muMemGetAddressRange",
+    "CUstream": "MUstream",
+    # Functions (alphabetical)
     "cuCtxGetCurrent": "muCtxGetCurrent",
     "cuCtxSetCurrent": "muCtxSetCurrent",
     "cuDeviceGet": "muDeviceGet",
     "cuDeviceGetCount": "muDeviceGetCount",
+    "cuDevicePrimaryCtxRetain": "muDevicePrimaryCtxRetain",
+    "cuGetErrorString": "muGetErrorString",
     "cuInit": "muInit",
-    "CU_POINTER_ATTRIBUTE_RANGE_START_ADDR": "MU_POINTER_ATTRIBUTE_RANGE_START_ADDR",
-    "CU_POINTER_ATTRIBUTE_RANGE_SIZE": "MU_POINTER_ATTRIBUTE_RANGE_SIZE",
-    "CU_POINTER_ATTRIBUTE_MEMORY_TYPE": "MU_POINTER_ATTRIBUTE_MEMORY_TYPE",
+    "cuMemAddressFree": "muMemAddressFree",
+    "cuMemAddressReserve": "muMemAddressReserve",
+    "cuMemCreate": "muMemCreate",
+    "cuMemGetAddressRange": "muMemGetAddressRange",
+    "cuMemGetAllocationGranularity": "muMemGetAllocationGranularity",
+    "cuMemMap": "muMemMap",
+    "cuMemRelease": "muMemRelease",
+    "cuMemSetAccess": "muMemSetAccess",
+    "cuMemUnmap": "muMemUnmap",
+    "cuPointerGetAttribute": "muPointerGetAttribute",
+    # Constants - memory allocation
+    "CU_MEM_ACCESS_FLAGS_PROT_READWRITE": "MU_MEM_ACCESS_FLAGS_PROT_READWRITE",
+    "CU_MEM_ALLOC_GRANULARITY_MINIMUM": "MU_MEM_ALLOC_GRANULARITY_MINIMUM",
+    "CU_MEM_ALLOCATION_COMP_NONE": "MU_MEM_ALLOCATION_COMP_NONE",
+    "CU_MEM_ALLOCATION_TYPE_PINNED": "MU_MEM_ALLOCATION_TYPE_PINNED",
+    "CU_MEM_LOCATION_TYPE_DEVICE": "MU_MEM_LOCATION_TYPE_DEVICE",
+    # Constants - pointer attributes
+    "CU_POINTER_ATTRIBUTE_CONTEXT": "MU_POINTER_ATTRIBUTE_CONTEXT",
     "CU_POINTER_ATTRIBUTE_DEVICE_POINTER": "MU_POINTER_ATTRIBUTE_DEVICE_POINTER",
     "CU_POINTER_ATTRIBUTE_HOST_POINTER": "MU_POINTER_ATTRIBUTE_HOST_POINTER",
-    "CU_POINTER_ATTRIBUTE_CONTEXT": "MU_POINTER_ATTRIBUTE_CONTEXT",
-    "CUDA_SUCCESS": "MUSA_SUCCESS",
+    "CU_POINTER_ATTRIBUTE_MEMORY_TYPE": "MU_POINTER_ATTRIBUTE_MEMORY_TYPE",
+    "CU_POINTER_ATTRIBUTE_RANGE_SIZE": "MU_POINTER_ATTRIBUTE_RANGE_SIZE",
+    "CU_POINTER_ATTRIBUTE_RANGE_START_ADDR": "MU_POINTER_ATTRIBUTE_RANGE_START_ADDR",
+    # Error codes
     "CUDA_ERROR_INVALID_VALUE": "MUSA_ERROR_INVALID_VALUE",
-    "CUDA_ERROR_OUT_OF_MEMORY": "MUSA_ERROR_OUT_OF_MEMORY",
     "CUDA_ERROR_NOT_INITIALIZED": "MUSA_ERROR_NOT_INITIALIZED",
+    "CUDA_ERROR_OUT_OF_MEMORY": "MUSA_ERROR_OUT_OF_MEMORY",
+    "CUDA_SUCCESS": "MUSA_SUCCESS",
     # =========================================================================
     # THC headers
     # =========================================================================
@@ -502,6 +535,7 @@ _MAPPING_RULE = {
     # =========================================================================
     # CUDA arch guards
     # =========================================================================
+    "__CUDA_ARCH__ >= 800": "__MUSA_ARCH__ >= 220",
     "(__CUDA_ARCH__ < 800)": "(__MUSA_ARCH__ < 220)",
     "(__CUDA_ARCH__ >= 900)": "(__MUSA_ARCH__ >= 310)",
     "cuda::std::numeric_limits": "musa::std::numeric_limits",

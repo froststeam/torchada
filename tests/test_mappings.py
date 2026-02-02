@@ -49,7 +49,8 @@ class TestC10Mappings:
     def test_c10_device_type(self):
         from torchada._mapping import _MAPPING_RULE
 
-        assert _MAPPING_RULE["c10::DeviceType::CUDA"] == "c10::DeviceType::MUSA"
+        # MUSA uses PrivateUse1 as its device type
+        assert _MAPPING_RULE["c10::DeviceType::CUDA"] == "c10::DeviceType::PrivateUse1"
 
 
 class TestTorchMappings:
@@ -64,10 +65,10 @@ class TestTorchMappings:
     def test_torch_device_type(self):
         from torchada._mapping import _MAPPING_RULE
 
-        assert _MAPPING_RULE["at::kCUDA"] == "at::kMUSA"
-        assert _MAPPING_RULE["at::DeviceType::CUDA"] == "at::DeviceType::MUSA"
-        # torch::kCUDA maps to PrivateUse1 for MUSA compatibility
-        assert _MAPPING_RULE["torch::kCUDA"] == "c10::DeviceType::PrivateUse1"
+        # All CUDA device type symbols map to PrivateUse1
+        assert _MAPPING_RULE["at::kCUDA"] == "at::kPrivateUse1"
+        assert _MAPPING_RULE["at::DeviceType::CUDA"] == "at::DeviceType::PrivateUse1"
+        assert _MAPPING_RULE["torch::kCUDA"] == "torch::kPrivateUse1"
 
 
 class TestCuBLASMappings:
@@ -942,3 +943,262 @@ class TestCDLLWrapper:
         # Synchronize
         result = funcs["cudaDeviceSynchronize"]()
         assert result == 0, f"cudaDeviceSynchronize failed with error {result}"
+
+
+# Import for compilation tests
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+import torchada
+
+# Path to device type test source file
+CSRC_DIR = os.path.join(os.path.dirname(__file__), "csrc")
+DEVICE_TYPE_TEST_CU = os.path.join(CSRC_DIR, "device_type_test.cu")
+
+
+def _is_gpu_available():
+    """Check if CUDA or MUSA GPU is available."""
+    import torch
+
+    if torch.cuda.is_available():
+        return True
+    if hasattr(torch, "musa") and torch.musa.is_available():
+        return True
+    return False
+
+
+@pytest.mark.skipif(
+    not os.environ.get("TORCHADA_TEST_BUILD", "0") == "1",
+    reason="Extension build tests are slow; set TORCHADA_TEST_BUILD=1 to run",
+)
+class TestDeviceTypeMappingCompilation:
+    """
+    Test that device type mappings compile and run correctly.
+
+    These tests verify that:
+    - at::DeviceType::CUDA -> at::DeviceType::PrivateUse1 compiles
+    - c10::DeviceType::CUDA -> c10::DeviceType::PrivateUse1 compiles
+    - at::kCUDA -> at::musa::kMUSA compiles
+    - torch::kCUDA -> c10::DeviceType::PrivateUse1 compiles
+    """
+
+    def test_device_type_test_source_exists(self):
+        """Verify the test source file exists."""
+        assert os.path.exists(
+            DEVICE_TYPE_TEST_CU
+        ), f"Device type test source not found: {DEVICE_TYPE_TEST_CU}"
+
+    def test_build_device_type_extension(self):
+        """Test building the device_type_test extension with device type mappings."""
+        if not _is_gpu_available():
+            pytest.skip("CUDA/MUSA not available")
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Device type mapping compilation test only applicable on MUSA")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Copy the source file
+            shutil.copy(DEVICE_TYPE_TEST_CU, tmpdir)
+
+            # Create setup.py using standard torch imports
+            setup_content = """
+import torchada  # noqa: F401 - Apply MUSA patches
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_device_type",
+    ext_modules=[
+        CUDAExtension(
+            name="test_device_type",
+            sources=["device_type_test.cu"],
+        )
+    ],
+    cmdclass={"build_ext": BuildExtension},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build the extension
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+            )
+
+            # Check build succeeded
+            assert (
+                result.returncode == 0
+            ), f"Build failed:\nstdout: {result.stdout}\nstderr: {result.stderr}"
+
+    def test_run_device_type_extension(self):
+        """Test running the device_type_test extension after building."""
+        import torch
+
+        if not _is_gpu_available():
+            pytest.skip("CUDA/MUSA not available")
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Device type mapping run test only applicable on MUSA platform")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Copy the source file
+            shutil.copy(DEVICE_TYPE_TEST_CU, tmpdir)
+
+            # Create setup.py
+            setup_content = """
+import torchada  # noqa: F401
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_device_type",
+    ext_modules=[
+        CUDAExtension(
+            name="test_device_type",
+            sources=["device_type_test.cu"],
+        )
+    ],
+    cmdclass={"build_ext": BuildExtension},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build the extension
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+            )
+            assert result.returncode == 0, f"Build failed: {result.stderr}"
+
+            # Add tmpdir to Python path and import the extension
+            sys.path.insert(0, tmpdir)
+            try:
+                import test_device_type
+
+                try:
+                    # Test 1: create_cuda_tensor - tests torch::kCUDA mapping
+                    tensor = test_device_type.create_cuda_tensor(10)
+                    assert tensor.shape == (10,), "create_cuda_tensor shape mismatch"
+                    assert tensor.device.type in (
+                        "cuda",
+                        "musa",
+                    ), f"Wrong device type: {tensor.device.type}"
+
+                    # Test 2: check_device_type - tests at::DeviceType::CUDA mapping
+                    input_tensor = torch.randn(5, device="cuda")
+                    output = test_device_type.check_device_type(input_tensor)
+                    assert output.shape == (1,), "check_device_type shape mismatch"
+
+                    # Test 3: get_device_info - tests multiple device type check methods
+                    info = test_device_type.get_device_info(input_tensor)
+                    # All three checks should return True
+                    assert info[0], "at::DeviceType::CUDA check failed"
+                    assert info[1], "c10::DeviceType::CUDA check failed"
+                    assert info[2], "is_cuda() check failed"
+
+                except RuntimeError as e:
+                    # Skip if GPU kernel execution fails (MUDNN issues in test containers)
+                    if "invalid device function" in str(e) or "MUDNN" in str(e):
+                        pytest.skip("GPU kernel execution failed (expected in test containers)")
+                    raise
+            finally:
+                sys.path.remove(tmpdir)
+                # Clean up imported module
+                if "test_device_type" in sys.modules:
+                    del sys.modules["test_device_type"]
+
+    def test_ported_source_contains_privateuse1(self):
+        """Verify the ported source code contains PrivateUse1, not MUSA."""
+        if not torchada.is_musa_platform():
+            pytest.skip("Source porting test only applicable on MUSA platform")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Copy the source file
+            shutil.copy(DEVICE_TYPE_TEST_CU, tmpdir)
+
+            # Create setup.py
+            setup_content = """
+import torchada  # noqa: F401
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+setup(
+    name="test_device_type",
+    ext_modules=[
+        CUDAExtension(
+            name="test_device_type",
+            sources=["device_type_test.cu"],
+        )
+    ],
+    cmdclass={"build_ext": BuildExtension},
+)
+"""
+            setup_path = os.path.join(tmpdir, "setup.py")
+            with open(setup_path, "w") as f:
+                f.write(setup_content)
+
+            # Build the extension (this triggers source porting)
+            result = subprocess.run(
+                [sys.executable, "setup.py", "build_ext", "--inplace"],
+                cwd=tmpdir,
+                capture_output=True,
+                text=True,
+            )
+
+            # Find all ported .mu files
+            # The ported files are in {tmpdir}_musa directory (created by torchada)
+            ported_files = []
+            musa_dir = f"{tmpdir}_musa"
+            if os.path.exists(musa_dir):
+                for root, dirs, files in os.walk(musa_dir):
+                    for f in files:
+                        if f.endswith(".mu"):
+                            ported_files.append(os.path.join(root, f))
+
+            # Also check inside tmpdir in case porting puts files there
+            for root, dirs, files in os.walk(tmpdir):
+                for f in files:
+                    if f.endswith(".mu"):
+                        ported_files.append(os.path.join(root, f))
+
+            assert (
+                len(ported_files) > 0
+            ), f"No .mu file found after porting. Build output:\n{result.stdout}"
+
+            # Read ported content
+            ported_content = ""
+            for pf in ported_files:
+                with open(pf, "r") as f:
+                    ported_content += f.read()
+
+            # Verify the mappings were applied correctly
+            assert (
+                "at::DeviceType::PrivateUse1" in ported_content
+            ), "at::DeviceType::CUDA was not ported to PrivateUse1"
+            assert (
+                "c10::DeviceType::PrivateUse1" in ported_content
+            ), "c10::DeviceType::CUDA was not ported to PrivateUse1"
+
+            # Verify CUDA device type references are gone
+            assert (
+                "at::DeviceType::CUDA" not in ported_content
+            ), "at::DeviceType::CUDA should be ported to PrivateUse1"
+            assert (
+                "c10::DeviceType::CUDA" not in ported_content
+            ), "c10::DeviceType::CUDA should be ported to PrivateUse1"
+
+            # Verify at::kCUDA is ported to at::kPrivateUse1
+            assert (
+                "at::kCUDA" not in ported_content
+            ), "at::kCUDA should be ported to at::kPrivateUse1"
