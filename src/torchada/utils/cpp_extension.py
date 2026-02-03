@@ -201,16 +201,31 @@ def _port_cuda_source(source_code: str, mapping_rules: Optional[Dict[str, str]] 
     return result
 
 
-def include_paths(cuda: bool = True) -> List[str]:
+def include_paths(cuda: Optional[bool] = None, device_type: Optional[str] = None) -> List[str]:
     """
     Get include paths for compiling extensions.
 
+    Supports both PyTorch < 2.6 (cuda=True) and PyTorch 2.6+ (device_type="cuda")
+    signatures for compatibility.
+
     Args:
-        cuda: Whether to include CUDA/MUSA paths
+        cuda: (PyTorch < 2.6) Whether to include CUDA/MUSA paths. Deprecated in 2.6+.
+        device_type: (PyTorch 2.6+) Device type string, e.g. "cuda", "cpu", "musa".
 
     Returns:
         List of include paths
     """
+    # Handle both old (cuda=bool) and new (device_type=str) signatures
+    if device_type is not None:
+        # PyTorch 2.6+ style: device_type="cuda" or "cpu"
+        # Translate "cuda" to MUSA include paths on MUSA platform
+        include_device = device_type.lower() in ("cuda", "musa")
+    elif cuda is not None:
+        include_device = cuda
+    else:
+        # Default: include device paths
+        include_device = True
+
     platform = detect_platform()
 
     if platform == Platform.MUSA:
@@ -218,7 +233,8 @@ def include_paths(cuda: bool = True) -> List[str]:
             import torch_musa.utils.musa_extension as musa_ext
 
             if hasattr(musa_ext, "include_paths"):
-                return musa_ext.include_paths(cuda=cuda)
+                # musa_ext uses musa=bool parameter, not cuda= or device_type=
+                return musa_ext.include_paths(musa=include_device)
         except ImportError:
             pass
 
@@ -230,24 +246,64 @@ def include_paths(cuda: bool = True) -> List[str]:
         return paths
 
     else:
+        # Check which signature the torch version supports
+        import inspect
+
         from torch.utils.cpp_extension import include_paths as torch_include_paths
 
-        return torch_include_paths(cuda=cuda)
+        sig = inspect.signature(torch_include_paths)
+        if "device_type" in sig.parameters:
+            # PyTorch 2.6+
+            if device_type is not None:
+                return torch_include_paths(device_type=device_type)
+            else:
+                return torch_include_paths(device_type="cuda" if include_device else "cpu")
+        else:
+            # PyTorch < 2.6
+            return torch_include_paths(cuda=include_device)
 
 
-def library_paths(cuda: bool = True) -> List[str]:
+def library_paths(cuda: Optional[bool] = None, device_type: Optional[str] = None) -> List[str]:
     """
     Get library paths for compiling extensions.
 
+    Supports both PyTorch < 2.6 (cuda=True) and PyTorch 2.6+ (device_type="cuda")
+    signatures for compatibility.
+
     Args:
-        cuda: Whether to include CUDA/MUSA library paths
+        cuda: (PyTorch < 2.6) Whether to include CUDA/MUSA library paths. Deprecated in 2.6+.
+        device_type: (PyTorch 2.6+) Device type string, e.g. "cuda", "cpu", "musa".
 
     Returns:
         List of library paths
     """
+    # Handle both old (cuda=bool) and new (device_type=str) signatures
+    if device_type is not None:
+        # PyTorch 2.6+ style: device_type="cuda" or "cpu"
+        # Translate "cuda" to MUSA library paths on MUSA platform
+        include_device = device_type.lower() in ("cuda", "musa")
+    elif cuda is not None:
+        include_device = cuda
+    else:
+        # Default: include device paths
+        include_device = True
+
     platform = detect_platform()
 
     if platform == Platform.MUSA:
+        if not include_device:
+            return []
+
+        try:
+            import torch_musa.utils.musa_extension as musa_ext
+
+            if hasattr(musa_ext, "library_paths"):
+                # musa_ext uses musa=bool parameter, not cuda= or device_type=
+                return musa_ext.library_paths(musa=include_device)
+        except ImportError:
+            pass
+
+        # Fallback: construct paths manually
         paths = []
         musa_home = _get_cuda_home()
         if musa_home:
@@ -256,9 +312,21 @@ def library_paths(cuda: bool = True) -> List[str]:
         return [p for p in paths if os.path.exists(p)]
 
     else:
+        # Check which signature the torch version supports
+        import inspect
+
         from torch.utils.cpp_extension import library_paths as torch_library_paths
 
-        return torch_library_paths(cuda=cuda)
+        sig = inspect.signature(torch_library_paths)
+        if "device_type" in sig.parameters:
+            # PyTorch 2.6+
+            if device_type is not None:
+                return torch_library_paths(device_type=device_type)
+            else:
+                return torch_library_paths(device_type="cuda" if include_device else "cpu")
+        else:
+            # PyTorch < 2.6
+            return torch_library_paths(cuda=include_device)
 
 
 class CUDAExtension:

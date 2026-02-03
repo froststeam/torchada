@@ -1107,6 +1107,10 @@ def _patch_cpp_extension():
         from torch.utils.cpp_extension import CUDAExtension, BuildExtension
 
     And have them work transparently on MUSA platform.
+
+    Also patches include_paths and library_paths to support both:
+    - PyTorch < 2.6: include_paths(cuda=True)
+    - PyTorch 2.6+: include_paths(device_type="cuda")
     """
     import torch.utils.cpp_extension as torch_cpp_ext
 
@@ -1116,6 +1120,11 @@ def _patch_cpp_extension():
     torch_cpp_ext.CUDAExtension = torchada_cpp_ext.CUDAExtension
     torch_cpp_ext.BuildExtension = torchada_cpp_ext.BuildExtension
     torch_cpp_ext.CUDA_HOME = torchada_cpp_ext.CUDA_HOME
+
+    # Patch include_paths and library_paths to handle both old and new signatures
+    # and to correctly translate "cuda" to MUSA on MUSA platform
+    torch_cpp_ext.include_paths = torchada_cpp_ext.include_paths
+    torch_cpp_ext.library_paths = torchada_cpp_ext.library_paths
 
     # Also update sys.modules entry
     sys.modules["torch.utils.cpp_extension"] = torch_cpp_ext

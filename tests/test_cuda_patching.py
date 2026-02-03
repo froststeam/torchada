@@ -1588,3 +1588,174 @@ class TestCudart:
             pytest.skip("Only applicable on MUSA platform")
 
         assert "cudart" in dir(torch.cuda)
+
+
+class TestCppExtensionPaths:
+    """Test include_paths and library_paths with both old and new signatures."""
+
+    def test_include_paths_with_cuda_param(self):
+        """Test include_paths with legacy cuda=bool parameter."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with cuda=True
+        paths = torch.utils.cpp_extension.include_paths(cuda=True)
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+        # Should include MUSA paths
+        assert any("musa" in p.lower() for p in paths)
+
+        # Test with cuda=False
+        paths_no_cuda = torch.utils.cpp_extension.include_paths(cuda=False)
+        assert isinstance(paths_no_cuda, list)
+
+    def test_include_paths_with_device_type_param(self):
+        """Test include_paths with PyTorch 2.6+ device_type=str parameter."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with device_type="cuda" - should work on MUSA
+        paths = torch.utils.cpp_extension.include_paths(device_type="cuda")
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+        # Should include MUSA paths when device_type="cuda" on MUSA platform
+        assert any("musa" in p.lower() for p in paths)
+
+        # Test with device_type="cpu"
+        paths_cpu = torch.utils.cpp_extension.include_paths(device_type="cpu")
+        assert isinstance(paths_cpu, list)
+
+    def test_include_paths_default(self):
+        """Test include_paths with no parameters (default behavior)."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Default should include device paths
+        paths = torch.utils.cpp_extension.include_paths()
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+
+    def test_library_paths_with_cuda_param(self):
+        """Test library_paths with legacy cuda=bool parameter."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with cuda=True
+        paths = torch.utils.cpp_extension.library_paths(cuda=True)
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+        # Should include MUSA library paths
+        assert any("musa" in p.lower() for p in paths)
+
+        # Test with cuda=False
+        paths_no_cuda = torch.utils.cpp_extension.library_paths(cuda=False)
+        assert isinstance(paths_no_cuda, list)
+        assert len(paths_no_cuda) == 0  # No device libs when cuda=False
+
+    def test_library_paths_with_device_type_param(self):
+        """Test library_paths with PyTorch 2.6+ device_type=str parameter."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with device_type="cuda" - should work on MUSA
+        paths = torch.utils.cpp_extension.library_paths(device_type="cuda")
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+        # Should include MUSA library paths
+        assert any("musa" in p.lower() for p in paths)
+
+        # Test with device_type="cpu"
+        paths_cpu = torch.utils.cpp_extension.library_paths(device_type="cpu")
+        assert isinstance(paths_cpu, list)
+        assert len(paths_cpu) == 0  # No device libs for CPU
+
+    def test_library_paths_default(self):
+        """Test library_paths with no parameters (default behavior)."""
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Default should include device library paths
+        paths = torch.utils.cpp_extension.library_paths()
+        assert isinstance(paths, list)
+        assert len(paths) > 0
+
+    def test_include_paths_patched_in_torch_module(self):
+        """Test that include_paths is properly patched in torch.utils.cpp_extension."""
+        import torch.utils.cpp_extension
+
+        import torchada
+        from torchada.utils import cpp_extension as torchada_cpp_ext
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Verify the function is patched
+        assert (
+            torch.utils.cpp_extension.include_paths == torchada_cpp_ext.include_paths
+        ), "include_paths should be patched to torchada's version"
+
+    def test_library_paths_patched_in_torch_module(self):
+        """Test that library_paths is properly patched in torch.utils.cpp_extension."""
+        import torch.utils.cpp_extension
+
+        import torchada
+        from torchada.utils import cpp_extension as torchada_cpp_ext
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Verify the function is patched
+        assert (
+            torch.utils.cpp_extension.library_paths == torchada_cpp_ext.library_paths
+        ), "library_paths should be patched to torchada's version"
+
+    def test_get_torch_include_paths_pattern(self):
+        """Test the exact pattern reported by user that was failing."""
+        import torch
+        import torch.utils.cpp_extension
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # This is the exact pattern from the user's report
+        def get_torch_include_paths(build_with_cuda: bool):
+            if torch.__version__ >= torch.torch_version.TorchVersion("2.6.0"):
+                return torch.utils.cpp_extension.include_paths(
+                    device_type="cuda" if build_with_cuda else "cpu"
+                )
+            else:
+                return torch.utils.cpp_extension.include_paths(cuda=build_with_cuda)
+
+        # Should not raise any errors
+        paths_with_cuda = get_torch_include_paths(True)
+        assert isinstance(paths_with_cuda, list)
+        assert len(paths_with_cuda) > 0
+
+        paths_without_cuda = get_torch_include_paths(False)
+        assert isinstance(paths_without_cuda, list)
