@@ -440,20 +440,33 @@ def _wrap_factory_function(original_fn: Callable) -> Callable:
 
 # List of torch factory functions that accept a device argument
 _FACTORY_FUNCTIONS = [
+    # Basic tensor creation
+    "tensor",
+    "as_tensor",
+    "asarray",
+    # Uninitialized/initialized tensors
     "empty",
     "zeros",
     "ones",
     "full",
+    # Random tensors
     "rand",
     "randn",
     "randint",
+    "randperm",
+    "normal",
+    # Sequences
     "arange",
+    "range",
     "linspace",
     "logspace",
+    # Special tensors
     "eye",
-    "tensor",
-    "as_tensor",
-    "from_numpy",
+    "empty_strided",
+    "empty_permuted",
+    # From file
+    "from_file",
+    # Like variants
     "empty_like",
     "zeros_like",
     "ones_like",
@@ -461,9 +474,22 @@ _FACTORY_FUNCTIONS = [
     "rand_like",
     "randn_like",
     "randint_like",
-    "empty_strided",
+    # Sparse tensors
     "sparse_coo_tensor",
     "sparse_csr_tensor",
+    "sparse_csc_tensor",
+    "sparse_bsr_tensor",
+    "sparse_bsc_tensor",
+    "sparse_compressed_tensor",
+    # Index tensors
+    "tril_indices",
+    "triu_indices",
+    # Window functions
+    "bartlett_window",
+    "blackman_window",
+    "hamming_window",
+    "hann_window",
+    "kaiser_window",
 ]
 
 

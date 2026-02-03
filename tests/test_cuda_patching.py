@@ -1759,3 +1759,124 @@ class TestCppExtensionPaths:
 
         paths_without_cuda = get_torch_include_paths(False)
         assert isinstance(paths_without_cuda, list)
+
+
+class TestTensorFactoryFunctions:
+    """Test tensor factory functions with device='cuda' translation."""
+
+    def test_asarray_with_cuda_device(self):
+        """Test torch.asarray with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with device='cuda'
+        x = torch.asarray([1, 2, 3, 4, 5], dtype=torch.float32, device="cuda")
+        assert x.device.type == "musa"
+        assert x.shape == (5,)
+        assert x.dtype == torch.float32
+
+    def test_asarray_with_cuda_index(self):
+        """Test torch.asarray with device='cuda:0' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        # Test with device='cuda:0'
+        x = torch.asarray([1, 2, 3], dtype=torch.float32, device="cuda:0")
+        assert x.device.type == "musa"
+        assert x.device.index == 0
+
+    def test_asarray_without_device(self):
+        """Test torch.asarray without device argument still works."""
+        import torch
+
+        import torchada
+
+        # Should create CPU tensor by default
+        x = torch.asarray([1, 2, 3], dtype=torch.float32)
+        assert x.device.type == "cpu"
+
+    def test_tensor_with_cuda_device(self):
+        """Test torch.tensor with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        x = torch.tensor([1, 2, 3], dtype=torch.float32, device="cuda")
+        assert x.device.type == "musa"
+
+    def test_zeros_with_cuda_device(self):
+        """Test torch.zeros with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        try:
+            x = torch.zeros(5, device="cuda")
+            assert x.device.type == "musa"
+        except RuntimeError as e:
+            # Skip if MUDNN kernel execution fails (expected in test containers)
+            if "MUDNN" in str(e) or "invalid device function" in str(e):
+                pytest.skip("MUDNN kernel execution failed (expected in test containers)")
+            raise
+
+    def test_ones_with_cuda_device(self):
+        """Test torch.ones with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        try:
+            x = torch.ones(5, device="cuda")
+            assert x.device.type == "musa"
+        except RuntimeError as e:
+            # Skip if MUDNN kernel execution fails (expected in test containers)
+            if "MUDNN" in str(e) or "invalid device function" in str(e):
+                pytest.skip("MUDNN kernel execution failed (expected in test containers)")
+            raise
+
+    def test_randn_with_cuda_device(self):
+        """Test torch.randn with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        try:
+            x = torch.randn(5, device="cuda")
+            assert x.device.type == "musa"
+        except RuntimeError as e:
+            # Skip if MUDNN kernel execution fails (expected in test containers)
+            if "MUDNN" in str(e) or "invalid device function" in str(e):
+                pytest.skip("MUDNN kernel execution failed (expected in test containers)")
+            raise
+
+    def test_empty_with_cuda_device(self):
+        """Test torch.empty with device='cuda' works on MUSA."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        x = torch.empty(5, device="cuda")
+        assert x.device.type == "musa"
