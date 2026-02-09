@@ -1083,8 +1083,10 @@ def _patch_backends_cuda():
 
     def patched_is_built():
         if "result" not in _is_built_cache:
-            # If MUSA is available, report as "built" since we redirect cuda->musa
-            if hasattr(torch, "musa") and torch.musa.is_available():
+            # On MUSA platform, report as "built" since we redirect cuda->musa.
+            # Use is_musa_platform() instead of torch.musa.is_available() so this
+            # works even when no GPU card is present (build-only environments).
+            if is_musa_platform():
                 _is_built_cache["result"] = True
             else:
                 _is_built_cache["result"] = original_is_built()

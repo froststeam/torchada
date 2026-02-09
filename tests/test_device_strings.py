@@ -417,6 +417,7 @@ class TestDeviceIndexVariants:
 class TestDeviceContextManager:
     """Test device context manager (with torch.device(...):) works."""
 
+    @pytest.mark.gpu
     def test_device_context_with_musa(self):
         """Test that device context manager works with musa device."""
         import torch
@@ -432,6 +433,7 @@ class TestDeviceContextManager:
             assert t.device.type == "musa"
             assert t.device.index == 0
 
+    @pytest.mark.gpu
     def test_device_context_with_cuda_translated(self):
         """Test that device context manager works with cuda device (translated to musa)."""
         import torch

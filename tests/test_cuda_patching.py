@@ -44,10 +44,6 @@ class TestTorchCudaModule:
             # On MUSA platform, torch.cuda.is_available() should return False
             # because CUDA is not available - only MUSA is
             assert result is False
-            # But torch.musa.is_available() should return True
-            import torch_musa
-
-            assert torch_musa.is_available() is True
 
     def test_torch_cuda_device_count(self):
         """Test torch.cuda.device_count() works."""
@@ -734,6 +730,7 @@ class TestDeviceFunctions:
 class TestTorchGenerator:
     """Test torch.Generator works with cuda device on MUSA platform."""
 
+    @pytest.mark.gpu
     def test_generator_cuda_device(self):
         """Test torch.Generator(device='cuda') works on MUSA."""
         import torch
@@ -746,6 +743,7 @@ class TestTorchGenerator:
             assert gen is not None
             assert gen.device.type == "musa"
 
+    @pytest.mark.gpu
     def test_generator_cuda_device_index(self):
         """Test torch.Generator(device='cuda:0') works on MUSA."""
         import torch
@@ -758,6 +756,7 @@ class TestTorchGenerator:
             assert gen.device.type == "musa"
             assert gen.device.index == 0
 
+    @pytest.mark.gpu
     def test_generator_musa_device(self):
         """Test torch.Generator(device='musa') still works."""
         import torch
@@ -778,6 +777,7 @@ class TestTorchGenerator:
         gen = torch.Generator()
         assert gen is not None
 
+    @pytest.mark.gpu
     def test_generator_manual_seed_chain(self):
         """Test torch.Generator(device='cuda').manual_seed(seed) works."""
         import torch
@@ -789,6 +789,7 @@ class TestTorchGenerator:
             assert gen is not None
             assert gen.device.type == "musa"
 
+    @pytest.mark.gpu
     def test_generator_isinstance_check(self):
         """Test isinstance(gen, torch.Generator) works correctly.
 
@@ -1200,6 +1201,7 @@ class TestProfilerActivity:
             # On MUSA, check that the wrapper is used
             assert hasattr(profiler, "_profiler")
 
+    @pytest.mark.gpu
     def test_profiler_context_manager(self):
         """Test profiler context manager works with CUDA activity."""
         import torch
@@ -1280,6 +1282,7 @@ class TestMusaWarnings:
 class TestLibraryImpl:
     """Test torch.library.Library.impl() patching for CUDA -> PrivateUse1 translation."""
 
+    @pytest.mark.gpu
     def test_library_impl_cuda_translated(self):
         """Test that Library.impl with 'CUDA' works on MUSA tensors."""
         import uuid
@@ -1449,6 +1452,7 @@ class TestLibraryImpl:
         result = op.identity_op(x)
         assert result is x
 
+    @pytest.mark.gpu
     def test_library_impl_cuda_with_keyset(self):
         """Test CUDA dispatch key translation works with with_keyset=True."""
         import uuid
@@ -1508,6 +1512,7 @@ class TestLibraryImpl:
         result = op.identity_op(x)
         assert result is x
 
+    @pytest.mark.gpu
     def test_library_impl_opoverload_as_op_name(self):
         """Test Library.impl works with OpOverload as op_name."""
         import uuid
@@ -1542,6 +1547,7 @@ class TestLibraryImpl:
 class TestCudart:
     """Test torch.cuda.cudart() CUDA runtime wrapper."""
 
+    @pytest.mark.gpu
     def test_cudart_returns_wrapper(self):
         """Test that torch.cuda.cudart() returns a wrapper on MUSA."""
         import torch
@@ -1556,6 +1562,7 @@ class TestCudart:
         # Should be our wrapper class
         assert "CudartWrapper" in type(cudart).__name__
 
+    @pytest.mark.gpu
     def test_cudart_host_register(self):
         """Test cudaHostRegister works via the wrapper."""
         import torch
@@ -1764,6 +1771,7 @@ class TestCppExtensionPaths:
 class TestTensorFactoryFunctions:
     """Test tensor factory functions with device='cuda' translation."""
 
+    @pytest.mark.gpu
     def test_asarray_with_cuda_device(self):
         """Test torch.asarray with device='cuda' works on MUSA."""
         import torch
@@ -1779,6 +1787,7 @@ class TestTensorFactoryFunctions:
         assert x.shape == (5,)
         assert x.dtype == torch.float32
 
+    @pytest.mark.gpu
     def test_asarray_with_cuda_index(self):
         """Test torch.asarray with device='cuda:0' works on MUSA."""
         import torch
@@ -1803,6 +1812,7 @@ class TestTensorFactoryFunctions:
         x = torch.asarray([1, 2, 3], dtype=torch.float32)
         assert x.device.type == "cpu"
 
+    @pytest.mark.gpu
     def test_tensor_with_cuda_device(self):
         """Test torch.tensor with device='cuda' works on MUSA."""
         import torch
@@ -1815,6 +1825,7 @@ class TestTensorFactoryFunctions:
         x = torch.tensor([1, 2, 3], dtype=torch.float32, device="cuda")
         assert x.device.type == "musa"
 
+    @pytest.mark.gpu
     def test_zeros_with_cuda_device(self):
         """Test torch.zeros with device='cuda' works on MUSA."""
         import torch
@@ -1833,6 +1844,7 @@ class TestTensorFactoryFunctions:
                 pytest.skip("MUDNN kernel execution failed (expected in test containers)")
             raise
 
+    @pytest.mark.gpu
     def test_ones_with_cuda_device(self):
         """Test torch.ones with device='cuda' works on MUSA."""
         import torch
@@ -1851,6 +1863,7 @@ class TestTensorFactoryFunctions:
                 pytest.skip("MUDNN kernel execution failed (expected in test containers)")
             raise
 
+    @pytest.mark.gpu
     def test_randn_with_cuda_device(self):
         """Test torch.randn with device='cuda' works on MUSA."""
         import torch
@@ -1869,6 +1882,7 @@ class TestTensorFactoryFunctions:
                 pytest.skip("MUDNN kernel execution failed (expected in test containers)")
             raise
 
+    @pytest.mark.gpu
     def test_empty_with_cuda_device(self):
         """Test torch.empty with device='cuda' works on MUSA."""
         import torch

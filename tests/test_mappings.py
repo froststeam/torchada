@@ -858,6 +858,7 @@ class TestCDLLWrapper:
             _ = lib.cudaMalloc
 
     @pytest.mark.musa
+    @pytest.mark.gpu
     def test_sglang_cuda_wrapper_pattern(self):
         """Test that sglang's cuda_wrapper.py pattern works seamlessly with torchada.
 

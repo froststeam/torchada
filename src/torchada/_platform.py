@@ -55,13 +55,38 @@ def detect_platform() -> Platform:
 
 
 def _is_musa_available() -> bool:
-    """Check if MUSA (Moore Threads) is available."""
+    """
+    Check if this is a MUSA (Moore Threads) platform.
+
+    Detects the MUSA platform by checking if torch_musa is installed,
+    rather than requiring a GPU to be present. This allows torchada to
+    work correctly in environments where torch_musa is installed but
+    no Moore Threads GPU card is available (e.g., build-only environments,
+    CI/CD, CPU-only testing).
+
+    Detection signals (in order):
+    1. torch.version.musa is set (torch was built with MUSA support)
+    2. torch_musa is importable
+    """
     try:
         import torch
-        import torch_musa
 
-        return torch.musa.is_available()
-    except (ImportError, AttributeError):
+        # Primary signal: torch.version.musa is set by torch_musa at build time.
+        # This is the most reliable indicator that we're on a MUSA platform,
+        # regardless of whether a GPU card is present.
+        if hasattr(torch.version, "musa") and torch.version.musa is not None:
+            return True
+
+        # Secondary signal: torch_musa is importable
+        try:
+            import torch_musa  # noqa: F401
+
+            return True
+        except ImportError:
+            pass
+
+        return False
+    except ImportError:
         return False
 
 

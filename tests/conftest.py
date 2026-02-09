@@ -37,12 +37,22 @@ def is_cuda():
     return torchada.is_cuda_platform()
 
 
+def _gpu_available():
+    """Check if any GPU is actually available (works on both CUDA and MUSA platforms)."""
+    import torch
+
+    if torchada.is_musa_platform():
+        try:
+            return torch.musa.is_available()
+        except Exception:
+            return False
+    return torch.cuda.is_available()
+
+
 @pytest.fixture(scope="session")
 def has_gpu():
     """Return True if any GPU is available."""
-    import torch
-
-    return torch.cuda.is_available()
+    return _gpu_available()
 
 
 @pytest.fixture(scope="function")
@@ -50,7 +60,7 @@ def gpu_tensor():
     """Create a GPU tensor fixture."""
     import torch
 
-    if torch.cuda.is_available():
+    if _gpu_available():
         return torch.randn(10, 10, device="cuda")
     else:
         pytest.skip("No GPU available")
@@ -66,8 +76,6 @@ def cpu_tensor():
 
 def pytest_collection_modifyitems(config, items):
     """Skip tests based on platform markers."""
-    import torch
-
     skip_musa = pytest.mark.skip(reason="MUSA platform required")
     skip_cuda = pytest.mark.skip(reason="CUDA platform required")
     skip_gpu = pytest.mark.skip(reason="GPU required")
@@ -77,5 +85,5 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_musa)
         if "cuda" in item.keywords and not torchada.is_cuda_platform():
             item.add_marker(skip_cuda)
-        if "gpu" in item.keywords and not torch.cuda.is_available():
+        if "gpu" in item.keywords and not _gpu_available():
             item.add_marker(skip_gpu)
