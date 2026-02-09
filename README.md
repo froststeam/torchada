@@ -294,6 +294,7 @@ if is_nvidia() or is_musa():
 | [Xinference](https://github.com/xorbitsai/inference) | Model Serving | ✅ Merged |
 | [LightLLM](https://github.com/ModelTC/LightLLM) | Model Serving | ✅ Merged |
 | [LightX2V](https://github.com/ModelTC/LightX2V) | Image/Video Generation | ✅ Merged |
+| [Chitu](https://github.com/thu-pacman/chitu) | Model Serving | ✅ Merged |
 | [SGLang](https://github.com/sgl-project/sglang) | Model Serving | In Progress |
 | [ComfyUI](https://github.com/comfyanonymous/ComfyUI) | Image/Video Generation | In Progress |
 
