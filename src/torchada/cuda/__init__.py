@@ -11,9 +11,9 @@ Usage (preferred):
     import torchada  # Apply patches
     import torch
 
-    if torch.cuda.is_available():
-        torch.cuda.set_device(0)
-        tensor = tensor.cuda()
+    # torch.cuda APIs work on MUSA after importing torchada
+    torch.cuda.set_device(0)
+    tensor = tensor.cuda()
 """
 
 from typing import Optional, Union

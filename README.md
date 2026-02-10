@@ -229,7 +229,7 @@ if torchada.is_gpu_device(device):  # Works on both CUDA and MUSA
 | `cublas_to_mublas_name(name)` | Convert `cublasXxx` → `mublasXxx` |
 | `curand_to_murand_name(name)` | Convert `curandXxx` → `murandXxx` |
 
-**Note**: `torch.cuda.is_available()` is intentionally NOT redirected — it returns `False` on MUSA. This allows proper platform detection. Use `torch.musa.is_available()` or `is_musa()` function instead.
+**Note**: `torch.cuda.is_available()` is intentionally NOT redirected — it returns `False` on MUSA. This allows proper platform detection. For GPU availability checks, see the `has_gpu()` pattern in [examples/migrate_existing_project.md](examples/migrate_existing_project.md#important-note-on-gpu-detection).
 
 **Note**: The name conversion utilities are exported for manual use, but `ctypes.CDLL` is automatically patched to translate function names when loading MUSA libraries.
 

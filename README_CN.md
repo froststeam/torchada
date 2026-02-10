@@ -229,7 +229,7 @@ if torchada.is_gpu_device(device):  # 在 CUDA 和 MUSA 上都能工作
 | `cublas_to_mublas_name(name)` | 转换 `cublasXxx` → `mublasXxx` |
 | `curand_to_murand_name(name)` | 转换 `curandXxx` → `murandXxx` |
 
-**注意**：`torch.cuda.is_available()` 故意没有重定向 — 在 MUSA 上返回 `False`。这是为了支持正确的平台检测。请改用 `torch.musa.is_available()` 或 `is_musa()` 函数。
+**注意**：`torch.cuda.is_available()` 故意没有重定向 — 在 MUSA 上返回 `False`。这是为了支持正确的平台检测。关于 GPU 可用性检查，请参见 [examples/migrate_existing_project.md](examples/migrate_existing_project.md#important-note-on-gpu-detection) 中的 `has_gpu()` 模式。
 
 **注意**：名称转换工具函数可供手动使用，但 `ctypes.CDLL` 已自动打补丁，加载 MUSA 库时会自动转换函数名。
 

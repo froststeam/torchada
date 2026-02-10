@@ -13,11 +13,12 @@ Usage:
     # Add this at the top of your script:
     import torchada
 
-    # Check for GPU availability (works on both CUDA and MUSA)
-    if torchada.is_musa_platform() or torch.cuda.is_available():
-        # Use standard torch.cuda APIs - they work on MUSA too!
-        x = torch.randn(3, 3).cuda()
-        torch.cuda.synchronize()
+    # Then use standard torch.cuda APIs - they work on MUSA too!
+    x = torch.randn(3, 3).cuda()
+    torch.cuda.synchronize()
+
+    # Note: torch.cuda.is_available() is NOT patched (returns False on MUSA).
+    # For GPU availability checks, see examples/migrate_existing_project.md.
 
     # Build extensions using standard imports:
     from torch.utils.cpp_extension import CUDAExtension, BuildExtension, CUDA_HOME
