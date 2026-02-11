@@ -44,4 +44,3 @@ torch::Tensor add_cuda(torch::Tensor a, torch::Tensor b) {
 
     return c;
 }
-

@@ -11,17 +11,11 @@ Usage:
     python examples/extension_setup.py build_ext --inplace
 """
 
-import os
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 # Now use standard torch imports - they work on any supported GPU!
-from torch.utils.cpp_extension import (
-    CUDA_HOME,
-    BuildExtension,
-    CppExtension,
-    CUDAExtension,
-)
+from torch.utils.cpp_extension import CUDA_HOME, BuildExtension, CUDAExtension
 
 # Import torchada first to apply patches
 import torchada  # noqa: F401

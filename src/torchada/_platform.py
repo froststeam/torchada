@@ -7,7 +7,6 @@ Detects whether the current environment supports CUDA (NVIDIA) or MUSA (Moore Th
 import os
 from enum import Enum
 from functools import lru_cache
-from typing import Optional
 
 
 class Platform(Enum):
@@ -134,7 +133,6 @@ def get_torch_device_module():
 
     if platform == Platform.MUSA:
         import torch
-        import torch_musa
 
         return torch.musa
     elif platform == Platform.CUDA:

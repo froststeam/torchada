@@ -66,9 +66,7 @@ def main():
             z = torch.matmul(x, y)
             print(f"Result tensor: {z.device}, shape: {z.shape}")
         except RuntimeError as e:
-            print(
-                f"Matrix multiplication skipped (driver/hardware issue): {type(e).__name__}"
-            )
+            print(f"Matrix multiplication skipped (driver/hardware issue): {type(e).__name__}")
             z = None
 
         # Memory info using standard torch.cuda API

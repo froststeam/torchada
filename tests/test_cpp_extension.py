@@ -7,10 +7,6 @@ work correctly:
 """
 
 import os
-import shutil
-import tempfile
-
-import pytest
 
 # Import torchada first to apply patches
 import torchada  # noqa: F401

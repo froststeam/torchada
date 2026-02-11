@@ -5,7 +5,6 @@ Usage:
     python examples/profiler_demo.py
 """
 
-import torchada  # Must import before torch to apply patches
 import torch
 
 
@@ -50,4 +49,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

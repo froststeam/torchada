@@ -52,8 +52,6 @@ class TestTensorDevicePatching:
         """Test .to(torch.device('cuda')) on tensors."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             x = torch.randn(2, 2)
             y = x.to(torch.device("cuda"))
@@ -83,8 +81,6 @@ class TestModuleDevicePatching:
         import torch
         import torch.nn as nn
 
-        import torchada
-
         if torch.cuda.is_available():
             model = nn.Linear(10, 5)
             model = model.to("cuda")
@@ -111,8 +107,6 @@ class TestFactoryFunctions:
         """Test torch.zeros(device='cuda')."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             try:
                 x = torch.zeros(2, 2, device="cuda")
@@ -127,8 +121,6 @@ class TestFactoryFunctions:
         """Test torch.ones(device='cuda')."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             try:
                 x = torch.ones(2, 2, device="cuda")
@@ -141,8 +133,6 @@ class TestFactoryFunctions:
     def test_torch_randn_device_cuda(self):
         """Test torch.randn(device='cuda')."""
         import torch
-
-        import torchada
 
         if torch.cuda.is_available():
             try:
@@ -157,8 +147,6 @@ class TestFactoryFunctions:
         """Test torch.rand(device='cuda')."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             try:
                 x = torch.rand(2, 2, device="cuda")
@@ -171,8 +159,6 @@ class TestFactoryFunctions:
     def test_torch_full_device_cuda(self):
         """Test torch.full(device='cuda')."""
         import torch
-
-        import torchada
 
         if torch.cuda.is_available():
             try:
@@ -187,8 +173,6 @@ class TestFactoryFunctions:
         """Test torch.arange(device='cuda')."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             try:
                 x = torch.arange(10, device="cuda")
@@ -201,8 +185,6 @@ class TestFactoryFunctions:
     def test_torch_linspace_device_cuda(self):
         """Test torch.linspace(device='cuda')."""
         import torch
-
-        import torchada
 
         if torch.cuda.is_available():
             try:
@@ -332,8 +314,6 @@ class TestDeviceIndexVariants:
         """Test cuda:0 works."""
         import torch
 
-        import torchada
-
         if torch.cuda.is_available():
             x = torch.randn(2, 2)
             y = x.to("cuda:0")
@@ -343,8 +323,6 @@ class TestDeviceIndexVariants:
     def test_factory_with_cuda_index(self):
         """Test torch.empty(device='cuda:0')."""
         import torch
-
-        import torchada
 
         if torch.cuda.is_available():
             x = torch.empty(2, 2, device="cuda:0")

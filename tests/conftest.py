@@ -2,9 +2,6 @@
 Pytest configuration and fixtures for torchada tests.
 """
 
-import os
-import sys
-
 import pytest
 
 # Ensure torchada is imported first to apply patches

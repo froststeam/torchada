@@ -12,7 +12,6 @@ Usage:
 
 import argparse
 import json
-import os
 import statistics
 import time
 from datetime import datetime
@@ -191,7 +190,6 @@ def run_micro_benchmarks():
     """Run micro-benchmarks to identify remaining optimization opportunities."""
     import torch
 
-    import torchada
     from torchada._platform import Platform, detect_platform, is_musa_platform
 
     print("=" * 80)

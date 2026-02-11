@@ -255,4 +255,3 @@ elif hasattr(torch.version, 'musa') and torch.version.musa is not None:
 ```
 
 Use `torch.version.cuda` and `torch.version.musa` for platform detection.
-

@@ -93,4 +93,3 @@ else
     echo -e "\n${GREEN}Upload complete!${NC}"
     echo "Install with: pip install torchada"
 fi
-

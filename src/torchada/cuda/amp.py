@@ -13,7 +13,6 @@ def _get_amp_backend():
 
     if platform == Platform.MUSA:
         import torch
-        import torch_musa
 
         if hasattr(torch.musa, "amp"):
             return torch.musa.amp

@@ -45,4 +45,3 @@ torch::Tensor mul_musa(torch::Tensor a, torch::Tensor b) {
 
     return c;
 }
-

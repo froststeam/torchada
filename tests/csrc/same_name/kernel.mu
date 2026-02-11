@@ -9,4 +9,3 @@
 int get_magic_number() {
     return 123;  // MUSA version returns 123
 }
-

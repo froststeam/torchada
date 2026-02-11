@@ -150,9 +150,7 @@ def main():
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss:.4f}")
 
         if gpu_available:
-            print(
-                f"  Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB"
-            )
+            print(f"  Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
 
     print("\nTraining complete!")
 

@@ -10,4 +10,3 @@ int get_magic_number();
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("get_magic_number", &get_magic_number, "Get the magic number to verify which file was used");
 }
-

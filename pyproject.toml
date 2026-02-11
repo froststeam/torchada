@@ -32,7 +32,7 @@ dependencies = [
 
 [project.optional-dependencies]
 musa = ["torch_musa"]
-dev = ["pytest", "pytest-cov", "black", "isort", "mypy"]
+dev = ["pytest", "pytest-cov", "black", "isort", "mypy", "pre-commit"]
 
 [project.urls]
 Homepage = "https://github.com/MooreThreads/torchada"
@@ -48,4 +48,3 @@ target-version = ["py38", "py39", "py310", "py311", "py312"]
 [tool.isort]
 profile = "black"
 line_length = 100
-

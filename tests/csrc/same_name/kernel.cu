@@ -10,4 +10,3 @@
 int get_magic_number() {
     return 42;  // CUDA version returns 42
 }
-

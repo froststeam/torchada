@@ -35,7 +35,6 @@ class TestExtensionBuildSetup:
     def test_can_create_setup_py(self):
         """Test that we can create a setup.py for the extension."""
         # Use standard torch imports - torchada patches make them work on MUSA
-        from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 
         # Create a temporary directory for the test
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -445,9 +444,6 @@ class TestSameNameFilePrecedence:
 
         if not torchada.is_musa_platform():
             pytest.skip("Same name precedence test only applicable on MUSA platform")
-
-        import torch
-        from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create csrc directory and copy source files

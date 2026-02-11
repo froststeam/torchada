@@ -10,8 +10,6 @@ import re
 import sys
 from pathlib import Path
 
-import pytest
-
 # Get the project root directory
 PROJECT_ROOT = Path(__file__).parent.parent
 SRC_DIR = PROJECT_ROOT / "src"

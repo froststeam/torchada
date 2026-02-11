@@ -73,4 +73,3 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("get_device_info", &get_device_info,
           "Get device type info using different check methods");
 }
-

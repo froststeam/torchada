@@ -14,4 +14,3 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
     m.def("add", &add_cuda, "Element-wise addition");
     m.def("mul", &mul_musa, "Element-wise multiplication");
 }
-

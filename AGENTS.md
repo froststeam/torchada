@@ -44,9 +44,16 @@ pip install -e .[dev]
 - **Formatter**: black with line-length 100
 - **Import sorting**: isort with black profile
 - **Python version**: >=3.8
+- **Pre-commit hooks**: Configured in `.pre-commit-config.yaml`
 
 ```bash
-# Format code
+# Set up pre-commit hooks (one-time)
+pre-commit install
+
+# Run all hooks on all files
+pre-commit run --all-files
+
+# Format code manually
 isort src/ tests/ && black src/ tests/
 
 # In Docker containers, preserve file ownership
@@ -176,4 +183,3 @@ docker exec -w /ws yeahdongcn1 python benchmarks/benchmark_overhead.py --save
 - Patches only affect torch APIs, not system resources
 - No network access or file system modifications
 - C++ extension building uses standard torch/setuptools mechanisms
-

@@ -27,7 +27,6 @@ Usage (preferred):
 
 import logging
 import os
-import re
 from typing import Any, Dict, List, Optional
 
 from .._mapping import _MAPPING_RULE, EXT_REPLACED_MAPPING

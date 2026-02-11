@@ -28,4 +28,3 @@ inline void check_cuda_error(cudaError_t err, const char* msg) {
 }
 
 }  // namespace test_utils
-

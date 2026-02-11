@@ -2,8 +2,6 @@
 Tests for platform detection and initialization.
 """
 
-import pytest
-
 
 class TestPlatformDetection:
     """Test platform detection functionality."""

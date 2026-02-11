@@ -28,4 +28,3 @@ inline void check_musa_error(musaError_t err, const char* msg) {
 }
 
 }  // namespace test_utils
-

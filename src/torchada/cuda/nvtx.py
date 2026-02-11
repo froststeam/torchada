@@ -7,18 +7,17 @@ functions for profiling. On MUSA platform, these are stubs that do nothing.
 Usage:
     import torchada  # Apply patches first
     import torch.cuda.nvtx as nvtx
-    
+
     nvtx.range_push("my_range")
     # ... code to profile ...
     nvtx.range_pop()
-    
+
     # Or use the context manager
     with nvtx.range("my_range"):
         # ... code to profile ...
 """
 
 from contextlib import contextmanager
-from typing import Optional
 
 __all__ = [
     "mark",
