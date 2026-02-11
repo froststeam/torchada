@@ -1,0 +1,183 @@
+# Copyright (c) torchada contributors
+# SPDX-License-Identifier: MIT
+"""
+C++ operator overrides infrastructure for torchada.
+
+This module handles building and loading C++ extensions that can override
+ATen operator implementations for the PrivateUse1 (MUSA) dispatch key.
+
+Usage:
+    # Enable C++ ops by setting environment variable
+    export TORCHADA_ENABLE_CPP_OPS=1
+
+    # Then import torchada as usual
+    import torchada
+
+    # Or explicitly load
+    from torchada._cpp_ops import load_cpp_ops
+    load_cpp_ops()
+"""
+
+import os
+import subprocess
+from typing import Optional
+
+_cpp_ops_module: Optional[object] = None
+_musa_arch_cached: Optional[str] = None
+
+
+def _detect_musa_arch() -> str:
+    """
+    Detect MUSA GPU architecture from compute capability.
+
+    Uses musaInfo to get compute capability and maps it to architecture:
+    - 2.1 -> mp_21 (MTT S80)
+    - 2.2 -> mp_22 (MTT S4000)
+    - 3.1 -> mp_31 (MTT S5000)
+
+    Returns:
+        Architecture string like "mp_21", "mp_22", or "mp_31".
+        Defaults to "mp_31" if detection fails.
+    """
+    global _musa_arch_cached
+    if _musa_arch_cached is not None:
+        return _musa_arch_cached
+
+    arch = "mp_31"  # Default fallback
+    try:
+        result = subprocess.run(
+            ["musaInfo"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        for line in result.stdout.splitlines():
+            if "compute capability:" in line.lower():
+                # Parse "compute capability:              2.1"
+                parts = line.split(":")
+                if len(parts) >= 2:
+                    version = parts[1].strip()
+                    # Convert "2.1" -> "mp_21", "3.1" -> "mp_31"
+                    version_parts = version.split(".")
+                    if len(version_parts) >= 2:
+                        major = version_parts[0].strip()
+                        minor = version_parts[1].strip()
+                        arch = f"mp_{major}{minor}"
+                        break
+    except Exception:
+        pass
+
+    _musa_arch_cached = arch
+    return arch
+
+
+def load_cpp_ops(force_reload: bool = False) -> Optional[object]:
+    """
+    Load the C++ operator overrides extension.
+
+    The extension is only loaded if:
+    1. Running on MUSA platform
+    2. TORCHADA_ENABLE_CPP_OPS=1 environment variable is set
+
+    Args:
+        force_reload: If True, reload the extension even if already loaded.
+
+    Returns:
+        The loaded extension module, or None if not loaded.
+    """
+    global _cpp_ops_module
+
+    if _cpp_ops_module is not None and not force_reload:
+        return _cpp_ops_module
+
+    # Check if enabled via environment variable
+    if os.environ.get("TORCHADA_ENABLE_CPP_OPS") != "1":
+        return None
+
+    # Check if on MUSA platform
+    from ._platform import is_musa_platform
+
+    if not is_musa_platform():
+        return None
+
+    try:
+        import os.path as osp
+
+        csrc_dir = osp.join(osp.dirname(__file__), "csrc")
+
+        # Collect all source files
+        cpp_sources = []
+        musa_sources = []
+
+        for fname in os.listdir(csrc_dir):
+            fpath = osp.join(csrc_dir, fname)
+            if fname.endswith(".cpp"):
+                cpp_sources.append(fpath)
+            elif fname.endswith((".cu", ".mu")):
+                musa_sources.append(fpath)
+
+        if not cpp_sources and not musa_sources:
+            import warnings
+
+            warnings.warn("torchada C++ ops: no source files found")
+            return None
+
+        verbose = os.environ.get("TORCHADA_CPP_OPS_VERBOSE") == "1"
+        all_sources = cpp_sources + musa_sources
+
+        # Use MUSA extension loader if we have MUSA sources, otherwise use torch's
+        if musa_sources:
+            # Use torchada's load which handles MUSA properly
+            from .utils.cpp_extension import load
+
+            # Get MUSA architecture flags
+            # Use MTGPU_TARGET env var if set, otherwise auto-detect from GPU
+            extra_cuda_cflags = []
+            mtgpu_target = os.environ.get("MTGPU_TARGET", "")
+            if not mtgpu_target:
+                mtgpu_target = _detect_musa_arch()
+            extra_cuda_cflags.append(f"--offload-arch={mtgpu_target}")
+
+            _cpp_ops_module = load(
+                name="torchada_cpp_ops",
+                sources=all_sources,
+                extra_include_paths=[csrc_dir],
+                extra_cuda_cflags=extra_cuda_cflags,
+                verbose=verbose,
+            )
+        else:
+            # Pure C++ extension - use torch's loader directly
+            from torch.utils.cpp_extension import load
+
+            _cpp_ops_module = load(
+                name="torchada_cpp_ops",
+                sources=all_sources,
+                extra_include_paths=[csrc_dir],
+                verbose=verbose,
+            )
+
+        _cpp_ops_module._mark_loaded()
+        return _cpp_ops_module
+
+    except Exception as e:
+        import warnings
+
+        warnings.warn(f"Failed to load torchada C++ ops: {e}")
+        return None
+
+
+def is_loaded() -> bool:
+    """Check if C++ ops extension is loaded."""
+    return _cpp_ops_module is not None
+
+
+def get_version() -> Optional[str]:
+    """Get C++ ops extension version."""
+    if _cpp_ops_module is None:
+        return None
+    return _cpp_ops_module.get_version()
+
+
+def get_module() -> Optional[object]:
+    """Get the loaded C++ ops module."""
+    return _cpp_ops_module

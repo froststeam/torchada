@@ -50,6 +50,11 @@ from .utils.cpp_extension import CUDA_HOME
 # Automatically apply patches on import
 apply_patches()
 
+# Load C++ operator overrides if enabled via TORCHADA_ENABLE_CPP_OPS=1
+from ._cpp_ops import load_cpp_ops
+
+load_cpp_ops()
+
 
 def get_version() -> str:
     """Return the version of torchada."""

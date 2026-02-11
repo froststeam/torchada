@@ -738,17 +738,20 @@ def load(
             import torch_musa.utils.musa_extension as musa_ext
 
             # Use MUSA's load function if available
+            # Note: MUSA uses different parameter names:
+            #   extra_cuda_cflags -> extra_musa_cflags
+            #   with_cuda -> with_musa
             if hasattr(musa_ext, "load"):
                 return musa_ext.load(
                     name=name,
                     sources=sources,
                     extra_cflags=extra_cflags,
-                    extra_cuda_cflags=extra_cuda_cflags,
+                    extra_musa_cflags=extra_cuda_cflags,
                     extra_ldflags=extra_ldflags,
                     extra_include_paths=extra_include_paths,
                     build_directory=build_directory,
                     verbose=verbose,
-                    with_cuda=with_cuda,
+                    with_musa=with_cuda,
                     is_python_module=is_python_module,
                     is_standalone=is_standalone,
                     keep_intermediates=keep_intermediates,

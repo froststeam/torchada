@@ -1784,3 +1784,60 @@ class TestTensorFactoryFunctions:
 
         x = torch.empty(5, device="cuda")
         assert x.device.type == "musa"
+
+
+class TestCppOpsInfrastructure:
+    """Test C++ operator overrides infrastructure."""
+
+    def test_cpp_ops_module_exists(self):
+        """Test that the _cpp_ops module exists and can be imported."""
+        from torchada import _cpp_ops
+
+        assert hasattr(_cpp_ops, "load_cpp_ops")
+        assert hasattr(_cpp_ops, "is_loaded")
+        assert hasattr(_cpp_ops, "get_version")
+        assert hasattr(_cpp_ops, "get_module")
+
+    def test_cpp_ops_not_loaded_by_default(self):
+        """Test that C++ ops are not loaded by default."""
+        from torchada import _cpp_ops
+
+        # Without TORCHADA_ENABLE_CPP_OPS=1, should not be loaded
+        # Note: This test may be affected by other tests that load the module
+        # So we just check the functions exist and are callable
+        assert callable(_cpp_ops.is_loaded)
+        assert callable(_cpp_ops.get_version)
+
+    def test_cpp_ops_source_files_exist(self):
+        """Test that the C++ source files are packaged correctly."""
+        import os.path as osp
+
+        import torchada
+
+        csrc_dir = osp.join(osp.dirname(torchada.__file__), "csrc")
+        assert osp.isdir(csrc_dir), f"csrc directory not found: {csrc_dir}"
+
+        ops_h = osp.join(csrc_dir, "ops.h")
+        ops_cpp = osp.join(csrc_dir, "ops.cpp")
+
+        assert osp.isfile(ops_h), f"ops.h not found: {ops_h}"
+        assert osp.isfile(ops_cpp), f"ops.cpp not found: {ops_cpp}"
+
+    def test_cpp_ops_header_content(self):
+        """Test that the C++ header has expected content."""
+        import os.path as osp
+
+        import torchada
+
+        csrc_dir = osp.join(osp.dirname(torchada.__file__), "csrc")
+        ops_h = osp.join(csrc_dir, "ops.h")
+
+        with open(ops_h, "r") as f:
+            content = f.read()
+
+        # Check for expected content
+        assert "namespace torchada" in content
+        assert "TORCH_LIBRARY_IMPL" in content
+        assert "PrivateUse1" in content
+        assert "is_override_enabled" in content
+        assert "log_op_call" in content

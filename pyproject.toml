@@ -41,6 +41,9 @@ Repository = "https://github.com/MooreThreads/torchada"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+torchada = ["csrc/*.h", "csrc/*.cpp", "csrc/*.cu", "csrc/*.mu", "csrc/*.cuh", "csrc/*.muh"]
+
 [tool.black]
 line-length = 100
 target-version = ["py38", "py39", "py310", "py311", "py312"]

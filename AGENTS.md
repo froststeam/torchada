@@ -21,6 +21,11 @@ src/torchada/
 ├── _patch.py            # All patching logic (~1100 lines)
 ├── _platform.py         # Platform detection utilities
 ├── _mapping.py          # CUDA→MUSA symbol mappings for C++ extensions
+├── _cpp_ops.py          # C++ operator overrides infrastructure
+├── csrc/                # C++ source files for operator overrides
+│   ├── ops.h            # Header with utilities and examples
+│   ├── ops.cpp          # Main C++ source with Python bindings
+│   └── musa_ops.mu      # MUSA kernel implementations
 ├── cuda/                # CUDA module compatibility
 └── utils/cpp_extension.py  # CUDAExtension wrapper
 tests/
@@ -176,6 +181,32 @@ docker exec -w /ws yeahdongcn1 python benchmarks/benchmark_overhead.py --save
 - Platform check caching (global variable `_is_musa_platform_cached`)
 - String translation caching (`_device_str_cache`)
 - Closure variable caching for wrapper functions
+
+## C++ Operator Overrides
+
+torchada supports overriding ATen operators at the C++ level for better performance.
+
+**See [docs/custom_musa_ops.md](docs/custom_musa_ops.md) for detailed documentation.**
+
+**Quick start**:
+```bash
+export TORCHADA_ENABLE_CPP_OPS=1
+```
+
+**Adding a new operator override**:
+
+1. Edit `src/torchada/csrc/musa_ops.mu` for MUSA kernels (or `ops.cpp` for pure C++)
+
+2. Register using `TORCH_LIBRARY_IMPL(aten, PrivateUse1, m)`
+
+3. The extension is JIT-compiled on first use
+
+**Environment variables**:
+- `TORCHADA_ENABLE_CPP_OPS=1` - Enable C++ operator overrides
+- `TORCHADA_CPP_OPS_VERBOSE=1` - Show compilation output
+- `TORCHADA_DEBUG_CPP_OPS=1` - Log operator calls
+- `TORCHADA_DISABLE_OP_OVERRIDE_<OP_NAME>=1` - Disable specific operator override
+- `MTGPU_TARGET=mp_XX` - Override GPU architecture (auto-detected via `musaInfo`)
 
 ## Security Considerations
 
