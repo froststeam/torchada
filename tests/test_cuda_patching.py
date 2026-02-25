@@ -1882,6 +1882,17 @@ class TestValidateDevice:
         validator = self.get_validator()
         validator(q, k, v)
 
+    def test_cpu_backward_should_fail(self):
+        import torch
+
+        q = torch.randn(2, 2, device="cpu", requires_grad=True)
+        k = torch.randn(2, 2, device="cpu")
+        v = torch.randn(2, 2, device="cpu")
+
+        validator = self.get_validator()
+        with pytest.raises(NotImplementedError, match="FlexAttention does not support backward"):
+            validator(q, k, v)
+
     def test_invalid_device_should_fail(self):
         import torch
 

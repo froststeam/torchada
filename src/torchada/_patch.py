@@ -1182,24 +1182,27 @@ def _patch_validate_device():
     """
     Patch torch.nn.attention.flex_attention._validate_device to accept MUSA devices.
 
-    The original function only allows "cuda" and "cpu" device types, which causes
-    FlexAttention to reject MUSA tensors. This patch adds "musa" as an accepted
-    device type.
+    The original upstream function supports cuda, cpu, xpu, and hpu device types.
+    This patch adds "musa" to the set of supported devices so FlexAttention
+    accepts MUSA tensors.
     """
     import torch.nn.attention.flex_attention
     from torch import Tensor
 
-    def _validate_device(query: Tensor, key: Tensor, value: Tensor):
+    def _validate_device(query: Tensor, key: Tensor, value: Tensor) -> None:
         """TODO: Remove once non cuda/cpu devices support is added
         We only need to check query since we have already that q,k,v are on the same device
         """
-        if (
-            query.device.type != "cuda"
-            and query.device.type != "cpu"
-            and query.device.type != "musa"
+        if query.device.type == "cpu" and (
+            query.requires_grad or key.requires_grad or value.requires_grad
         ):
+            raise NotImplementedError(
+                "FlexAttention does not support backward on CPU. Please set the input requires_grad to False or use another device."
+            )
+        supported_devices = {"cuda", "cpu", "xpu", "hpu", "musa"}
+        if query.device.type not in supported_devices:
             raise ValueError(
-                "FlexAttention is only supported on CUDA or CPU or MUSA devices. "
+                "FlexAttention is only supported on CUDA, CPU, XPU, HPU or MUSA devices. "
                 f"Found input tensors on {query.device.type} device."
             )
 
