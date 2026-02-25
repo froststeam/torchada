@@ -61,6 +61,7 @@ torch.cuda.synchronize()
 | 分布式训练 | `dist.init_process_group(backend='nccl')` → 使用 MCCL |
 | torch.compile | `torch.compile(model)` 支持所有后端 |
 | C++ 扩展 | `CUDAExtension`, `BuildExtension`, `load()` |
+| FlexAttention | `torch.nn.attention.flex_attention` 支持 MUSA 设备 |
 | ctypes 库加载 | `ctypes.CDLL` 使用 CUDA 函数名 → 自动转换为 MUSA |
 
 ## 示例

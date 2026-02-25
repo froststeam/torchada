@@ -216,11 +216,14 @@ class TestCUDARuntimeMappings:
         assert _MAPPING_RULE["cudaMemcpyDeviceToHost"] == "musaMemcpyDeviceToHost"
         assert _MAPPING_RULE["cudaMemcpyDeviceToDevice"] == "musaMemcpyDeviceToDevice"
         assert _MAPPING_RULE["cudaMemcpyHostToHost"] == "musaMemcpyHostToHost"
-    
+
     def test_memory_constants(self):
         from torchada._mapping import _MAPPING_RULE
-        
-        assert _MAPPING_RULE["cudaFuncAttributeMaxDynamicSharedMemorySize"] == "musaFuncAttributeMaxDynamicSharedMemorySize"
+
+        assert (
+            _MAPPING_RULE["cudaFuncAttributeMaxDynamicSharedMemorySize"]
+            == "musaFuncAttributeMaxDynamicSharedMemorySize"
+        )
 
 
 class TestStreamEventMappings:
@@ -466,7 +469,7 @@ class TestPyTorchCppMappings:
         from torchada._mapping import _MAPPING_RULE
 
         assert _MAPPING_RULE["getCurrentCUDABlasHandle"] == "getCurrentMUSABlasHandle"
-        
+
     def test_pytorch_torch_namespace(self):
         from torchada._mapping import _MAPPING_RULE
 
@@ -480,13 +483,18 @@ class TestPyTorchCppMappings:
         )
         assert _MAPPING_RULE["torch::cuda::getStreamFromPool"] == "torch::musa::getStreamFromPool"
 
+
 class TestCUDADriverMappings:
     """Test CUDA driver API mappings."""
 
     def test_memory_constants(self):
         from torchada._mapping import _MAPPING_RULE
 
-        assert _MAPPING_RULE["CU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_CUDA_VMM_SUPPORTED"] == "MU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_MUSA_VMM_SUPPORTED"
+        assert (
+            _MAPPING_RULE["CU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_CUDA_VMM_SUPPORTED"]
+            == "MU_DEVICE_ATTRIBUTE_GPU_DIRECT_RDMA_WITH_MUSA_VMM_SUPPORTED"
+        )
+
 
 class TestMappingCount:
     """Test total mapping count."""
