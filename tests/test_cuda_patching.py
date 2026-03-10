@@ -378,6 +378,45 @@ class TestDistributedBackend:
 
         assert hasattr(dist.Backend, "NCCL")
 
+    def test_is_nccl_available_redirects_to_mccl(self, monkeypatch):
+        """Test distributed_c10d.is_nccl_available redirects to is_mccl_available."""
+        import torch.distributed as dist
+        import torch.distributed.distributed_c10d as distributed_c10d
+
+        import torchada._patch as patch_mod
+
+        def fake_init_process_group(**kwargs):
+            return kwargs
+
+        def fake_new_group(**kwargs):
+            return kwargs
+
+        def fake_is_mccl_available():
+            return "mccl"
+
+        def fake_is_nccl_available():
+            return "nccl"
+
+        monkeypatch.setattr(patch_mod, "_original_init_process_group", None)
+        monkeypatch.setattr(patch_mod, "is_musa_platform", lambda: True)
+        monkeypatch.setattr(dist, "init_process_group", fake_init_process_group)
+        monkeypatch.setattr(dist, "new_group", fake_new_group)
+        monkeypatch.setattr(dist, "is_mccl_available", fake_is_mccl_available)
+        monkeypatch.setattr(dist, "is_nccl_available", fake_is_nccl_available)
+        monkeypatch.setattr(distributed_c10d, "is_mccl_available", fake_is_mccl_available)
+        monkeypatch.setattr(distributed_c10d, "is_nccl_available", fake_is_nccl_available)
+
+        patch_mod._patch_distributed_backend()
+
+        from torch.distributed.distributed_c10d import (
+            is_nccl_available as imported_is_nccl_available,
+        )
+
+        assert distributed_c10d.is_nccl_available is fake_is_mccl_available
+        assert dist.is_nccl_available is fake_is_mccl_available
+        assert imported_is_nccl_available is fake_is_mccl_available
+        assert imported_is_nccl_available() == "mccl"
+
     def test_new_group_patched(self):
         """Test new_group is patched to translate nccl->mccl."""
         import torch.distributed as dist
