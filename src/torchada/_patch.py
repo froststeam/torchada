@@ -1223,6 +1223,30 @@ def _patch_validate_device():
     torch.nn.attention.flex_attention._validate_device = _validate_device
 
 
+@patch_function
+@requires_import("pymtml")
+def _patch_pynvml():
+    """
+    Redirect pynvml imports to pymtml on MUSA platform.
+
+    Some downstream CUDA-oriented projects import NVML bindings via:
+        import pynvml
+
+    On MUSA, pymtml provides the equivalent management APIs. This patch
+    registers pymtml as pynvml in sys.modules so existing imports continue
+    to work without code changes.
+    """
+    import pymtml
+
+    # Only register if pynvml is not already installed/imported.
+    if "pynvml" not in sys.modules:
+        pynvml_module = ModuleType("pynvml", getattr(pymtml, "__doc__", None))
+        pynvml_module.__dict__.update(pymtml.__dict__)
+        pynvml_module.__name__ = "pynvml"
+        pynvml_module.__file__ = getattr(pymtml, "__file__", None)
+        sys.modules["pynvml"] = pynvml_module
+
+
 class _CDLLWrapper:
     """
     Wrapper for ctypes.CDLL that automatically translates CUDA/NCCL function names
