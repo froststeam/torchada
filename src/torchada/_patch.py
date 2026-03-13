@@ -754,17 +754,6 @@ def _patch_distributed_backend():
     global _original_init_process_group
 
     import torch.distributed as dist
-    import torch.distributed.distributed_c10d as distributed_c10d
-
-    # Redirect NCCL availability checks to MCCL on MUSA platform.
-    # This allows code such as:
-    #   from torch.distributed.distributed_c10d import is_nccl_available
-    # to continue working on MUSA.
-    if is_musa_platform():
-        if hasattr(distributed_c10d, "is_mccl_available"):
-            distributed_c10d.is_nccl_available = distributed_c10d.is_mccl_available
-        if hasattr(dist, "is_mccl_available"):
-            dist.is_nccl_available = dist.is_mccl_available
 
     if _original_init_process_group is not None:
         # Already patched
