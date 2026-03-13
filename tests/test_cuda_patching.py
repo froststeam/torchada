@@ -1003,7 +1003,6 @@ class TestPatchDecorators:
             "_patch_autocast",
             "_patch_cpp_extension",
             "_patch_autotune_process",
-            "_patch_pynvml",
         ]
 
         for expected in expected_fns:
@@ -1973,47 +1972,3 @@ class TestValidateDevice:
         # The patch must not raise even when the attribute is absent.
         _patch_validate_device()
         assert hasattr(flex_attention, "_validate_device")
-
-
-class TestPynvmlAlias:
-    """Test aliasing pymtml as pynvml."""
-
-    def test_patch_pynvml_aliases_pymtml(self, monkeypatch):
-        import importlib
-        import sys
-        import types
-
-        from torchada._patch import _patch_pynvml
-
-        fake_pymtml = types.ModuleType("pymtml")
-        fake_pymtml.mtmlInit = lambda: 0
-        fake_pymtml.__file__ = "/fake/site-packages/pymtml.py"
-
-        monkeypatch.setitem(sys.modules, "pymtml", fake_pymtml)
-        monkeypatch.delitem(sys.modules, "pynvml", raising=False)
-
-        _patch_pynvml()
-
-        pynvml = importlib.import_module("pynvml")
-
-        assert pynvml is sys.modules["pynvml"]
-        assert pynvml is not fake_pymtml
-        assert pynvml.__name__ == "pynvml"
-        assert pynvml.__file__ == "/fake/site-packages/pymtml.py"
-        assert pynvml.mtmlInit is fake_pymtml.mtmlInit
-
-    def test_patch_pynvml_does_not_override_existing_module(self, monkeypatch):
-        import sys
-        import types
-
-        from torchada._patch import _patch_pynvml
-
-        fake_pymtml = types.ModuleType("pymtml")
-        existing_pynvml = types.ModuleType("pynvml")
-
-        monkeypatch.setitem(sys.modules, "pymtml", fake_pymtml)
-        monkeypatch.setitem(sys.modules, "pynvml", existing_pynvml)
-
-        _patch_pynvml()
-
-        assert sys.modules["pynvml"] is existing_pynvml
