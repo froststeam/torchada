@@ -1029,6 +1029,7 @@ def _patch_library_impl():
     Example of code that needs this patch:
         my_lib.impl(op_name, op_func, "CUDA")  # Now works on MUSA!
         my_lib.impl(op_name, op_func, "Autograd", with_keyset=True)  # Also works!
+        my_lib.impl(op_name, op_func, "Autograd", with_keyset=True, allow_override=True)  # Also works!
     """
     if not hasattr(torch, "library") or not hasattr(torch.library, "Library"):
         return
@@ -1046,11 +1047,16 @@ def _patch_library_impl():
         "NestedTensorCUDA": "NestedTensorPrivateUse1",
     }
 
-    def patched_impl(self, op_name, fn, dispatch_key="", *, with_keyset=False):
+    def patched_impl(self, *args, **kwargs):
         # Translate CUDA dispatch keys to PrivateUse1 equivalents for MUSA compatibility
-        if dispatch_key in cuda_dispatch_key_map:
-            dispatch_key = cuda_dispatch_key_map[dispatch_key]
-        return original_impl(self, op_name, fn, dispatch_key, with_keyset=with_keyset)
+        sig = inspect.signature(original_impl)
+        bound = sig.bind(self, *args, **kwargs)
+        bound.apply_defaults()
+
+        if bound.arguments.get('dispatch_key') in cuda_dispatch_key_map:
+            bound.arguments['dispatch_key'] = cuda_dispatch_key_map[bound.arguments['dispatch_key']]
+
+        return original_impl(*bound.args, **bound.kwargs)
 
     torch.library.Library.impl = patched_impl
 
