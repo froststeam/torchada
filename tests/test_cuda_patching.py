@@ -1123,18 +1123,29 @@ class TestIsCompiledAndBackends:
         except (AttributeError, AssertionError):
             pytest.skip("fp32_precision not available (torchada MUSA-specific attribute)")
 
-        # Should be accessible
+        if torch.__version__ >= torch.torch_version.TorchVersion("2.9.0"):
+            # PyTorch 2.9+: Only use the new API. Do NOT call torch.get_float32_matmul_precision()
+            valid_precisions = ("ieee", "tf32")
+            test_values = ["ieee", "tf32"]
+            check_underlying_api = False  # Critical: avoid mixing APIs
+        else:
+            valid_precisions = ("highest", "high", "medium")
+            test_values = ["highest", "high"]
+            check_underlying_api = True
+
+        # Save original state
         original = torch.backends.cuda.matmul.fp32_precision
-        assert original in ("highest", "high", "medium")
+        assert original in valid_precisions, \
+            f"fp32_precision value '{original}' not in expected set {valid_precisions}"
 
-        # Test setting (use torch.get/set_float32_matmul_precision values)
-        torch.backends.cuda.matmul.fp32_precision = "highest"
-        assert torch.backends.cuda.matmul.fp32_precision == "highest"
-        assert torch.get_float32_matmul_precision() == "highest"
+        # Test setting values
+        for test_value in test_values:
+            torch.backends.cuda.matmul.fp32_precision = test_value
+            assert torch.backends.cuda.matmul.fp32_precision == test_value
 
-        torch.backends.cuda.matmul.fp32_precision = "high"
-        assert torch.backends.cuda.matmul.fp32_precision == "high"
-        assert torch.get_float32_matmul_precision() == "high"
+            # Only check the underlying old API for older PyTorch versions
+            if check_underlying_api:
+                assert torch.get_float32_matmul_precision() == test_value
 
         # Restore original
         torch.backends.cuda.matmul.fp32_precision = original
@@ -1394,6 +1405,10 @@ class TestLibraryImpl:
         if not torchada.is_musa_platform():
             pytest.skip("Only applicable on MUSA platform")
 
+        # Skip for PyTorch versions below 2.9 as allow_override may not be supported
+        if torch.__version__ < torch.torch_version.TorchVersion("2.9.0"):
+            pytest.skip("allow_override parameter requires PyTorch 2.9 or higher")
+
         lib_name = f"test_lib_{uuid.uuid4().hex[:8]}"
         test_lib = torch.library.Library(lib_name, "DEF")
 
@@ -1423,6 +1438,10 @@ class TestLibraryImpl:
         if not torchada.is_musa_platform():
             pytest.skip("Only applicable on MUSA platform")
 
+        # Skip for PyTorch versions below 2.9 as allow_override may not be supported
+        if torch.__version__ < torch.torch_version.TorchVersion("2.9.0"):
+            pytest.skip("allow_override parameter requires PyTorch 2.9 or higher")
+
         lib_name = f"test_lib_{uuid.uuid4().hex[:8]}"
         test_lib = torch.library.Library(lib_name, "DEF")
 
@@ -1448,6 +1467,10 @@ class TestLibraryImpl:
 
         if not torchada.is_musa_platform():
             pytest.skip("Only applicable on MUSA platform")
+
+        # Skip for PyTorch versions below 2.9 as allow_override may not be supported
+        if torch.__version__ < torch.torch_version.TorchVersion("2.9.0"):
+            pytest.skip("allow_override parameter requires PyTorch 2.9 or higher")
 
         lib_name = f"test_lib_{uuid.uuid4().hex[:8]}"
         test_lib = torch.library.Library(lib_name, "DEF")
