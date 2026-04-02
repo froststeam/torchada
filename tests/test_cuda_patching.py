@@ -740,14 +740,13 @@ class TestTorchCudaMemory:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            from torch.cuda.memory import CUDAPluggableAllocator
             from torch.musa.memory import MUSAPluggableAllocator
-
-            assert CUDAPluggableAllocator is MUSAPluggableAllocator
         except (ImportError, AttributeError):
-            # This is expected if torch_musa doesn't have memory.MUSAPluggableAllocator
-            # or if the environment doesn't have torch_musa
-            pytest.skip("torch.musa.memory or MUSAPluggableAllocator not available")
+            pytest.skip("torch.musa.memory.MUSAPluggableAllocator not available")
+
+        from torch.cuda.memory import CUDAPluggableAllocator
+
+        assert CUDAPluggableAllocator is MUSAPluggableAllocator
 
 
 class TestTorchGenerator:

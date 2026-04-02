@@ -713,13 +713,12 @@ def _patch_torch_cuda_module():
 
         # Patch torch.cuda.memory
         if hasattr(torch.musa, "memory"):
-            sys.modules["torch.cuda.memory"] = torch.musa.memory
-
-        # Add CUDAPluggableAllocator alias pointing to MUSAPluggableAllocator
-        if hasattr(torch.musa.memory, "MUSAPluggableAllocator") and not hasattr(
-            torch.musa.memory, "CUDAPluggableAllocator"
-        ):
-            torch.musa.memory.CUDAPluggableAllocator = torch.musa.memory.MUSAPluggableAllocator
+            musa_memory_module = torch.musa.memory
+            if musa_memory_module is not None:
+                sys.modules["torch.cuda.memory"] = musa_memory_module
+                # Add CUDAPluggableAllocator alias pointing to MUSAPluggableAllocator
+                if hasattr(musa_memory_module, "MUSAPluggableAllocator"):
+                    musa_memory_module.CUDAPluggableAllocator = musa_memory_module.MUSAPluggableAllocator
 
         # Patch torch.cuda.graph context manager to accept cuda_graph= keyword
         # MUSA's graph class uses musa_graph= but CUDA code uses cuda_graph=
