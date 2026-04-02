@@ -727,6 +727,29 @@ class TestDeviceFunctions:
         assert hasattr(torch.cuda, "is_initialized")
 
 
+class TestTorchCudaMemory:
+    """Test torch.cuda.memory module patching."""
+
+    def test_import_pluggable_allocator(self):
+        """Test that CUDAPluggableAllocator can be imported from torch.cuda.memory."""
+        import torch
+
+        import torchada
+
+        if not torchada.is_musa_platform():
+            pytest.skip("Only applicable on MUSA platform")
+
+        try:
+            from torch.cuda.memory import CUDAPluggableAllocator
+            from torch.musa.memory import MUSAPluggableAllocator
+
+            assert CUDAPluggableAllocator is MUSAPluggableAllocator
+        except (ImportError, AttributeError):
+            # This is expected if torch_musa doesn't have memory.MUSAPluggableAllocator
+            # or if the environment doesn't have torch_musa
+            pytest.skip("torch.musa.memory or MUSAPluggableAllocator not available")
+
+
 class TestTorchGenerator:
     """Test torch.Generator works with cuda device on MUSA platform."""
 
