@@ -732,7 +732,6 @@ class TestTorchCudaMemory:
 
     def test_import_pluggable_allocator(self):
         """Test that CUDAPluggableAllocator can be imported from torch.cuda.memory."""
-        import torch
 
         import torchada
 
@@ -2173,11 +2172,11 @@ class TestValidateDevice:
 
 
 class TestFlashAttnPatching:
-    """Test flash_attn / sgl_kernel.flash_attn patching."""
+    """Test flash_attn_interface / sgl_kernel.flash_attn patching."""
 
-    def test_sgl_kernel_flash_attn_import_when_flash_attn_available(self):
+    def test_sgl_kernel_flash_attn_import_when_flash_attn_interface_available(self):
         """Test that 'from sgl_kernel.flash_attn import flash_attn_varlen_func' works
-        when flash_attn is available (MUSA platform with mate's flash_attn package).
+        when flash_attn_interface is available (MUSA platform with mate's flash_attn package).
 
         This is the primary use case: unified code should always import from
         sgl_kernel.flash_attn regardless of platform.
@@ -2189,19 +2188,19 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         from sgl_kernel.flash_attn import flash_attn_varlen_func
 
         assert flash_attn_varlen_func is not None
         assert callable(flash_attn_varlen_func)
 
-        # Verify it's the same function as in flash_attn directly
-        import flash_attn as fa
+        # Verify it's the same function as in flash_attn_interface directly
+        import flash_attn_interface as fai
 
-        assert flash_attn_varlen_func is fa.flash_attn_varlen_func
+        assert flash_attn_varlen_func is fai.flash_attn_varlen_func
 
     def test_sgl_kernel_flash_attn_module_in_sys_modules(self):
         """Test that sgl_kernel.flash_attn is registered in sys.modules."""
@@ -2213,17 +2212,17 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         assert "sgl_kernel" in sys.modules
         assert "sgl_kernel.flash_attn" in sys.modules
-        assert sys.modules["sgl_kernel.flash_attn"] is flash_attn
+        assert sys.modules["sgl_kernel.flash_attn"] is flash_attn_interface
 
     def test_sgl_kernel_stub_created_when_sgl_kernel_not_installed(self):
         """Test that a stub sgl_kernel module is created when sgl_kernel is not
-        installed but flash_attn is available."""
+        installed but flash_attn_interface is available."""
         import sys
 
         import torchada
@@ -2232,9 +2231,9 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         sgl_kernel = sys.modules.get("sgl_kernel")
         assert sgl_kernel is not None
@@ -2253,14 +2252,14 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         # The patch has already run. Verify sgl_kernel.flash_attn is set.
         sgl_kernel = sys.modules["sgl_kernel"]
         assert hasattr(sgl_kernel, "flash_attn")
-        assert sgl_kernel.flash_attn is flash_attn
+        assert sgl_kernel.flash_attn is flash_attn_interface
 
     def test_real_sgl_kernel_not_replaced_by_stub(self):
         """Test that a real sgl_kernel module already in sys.modules is preserved,
@@ -2274,15 +2273,16 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn
+            import flash_attn_interface
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         from torchada._patch import _patch_flash_attn
 
         # Save original state
         orig_sgl_kernel = sys.modules.pop("sgl_kernel", None)
         orig_sgl_kernel_fa = sys.modules.pop("sgl_kernel.flash_attn", None)
+        orig_flash_attn = sys.modules.pop("flash_attn", None)
 
         try:
             # Simulate a real sgl_kernel package already imported with a custom attribute
@@ -2299,21 +2299,24 @@ class TestFlashAttnPatching:
             assert sys.modules["sgl_kernel"] is fake_sgl_kernel
             # The original attribute should still be there
             assert fake_sgl_kernel.some_other_api() == "real"
-            # flash_attn should have been added
-            assert fake_sgl_kernel.flash_attn is flash_attn
-            assert sys.modules["sgl_kernel.flash_attn"] is flash_attn
+            # flash_attn_interface should have been added
+            assert fake_sgl_kernel.flash_attn is flash_attn_interface
+            assert sys.modules["sgl_kernel.flash_attn"] is flash_attn_interface
         finally:
             # Restore original state
             sys.modules.pop("sgl_kernel", None)
             sys.modules.pop("sgl_kernel.flash_attn", None)
+            sys.modules.pop("flash_attn", None)
             if orig_sgl_kernel is not None:
                 sys.modules["sgl_kernel"] = orig_sgl_kernel
             if orig_sgl_kernel_fa is not None:
                 sys.modules["sgl_kernel.flash_attn"] = orig_sgl_kernel_fa
+            if orig_flash_attn is not None:
+                sys.modules["flash_attn"] = orig_flash_attn
 
     def test_flash_attn_direct_import_still_works(self):
         """Test backward compatibility: 'from flash_attn import flash_attn_varlen_func'
-        still works after patching."""
+        still works after patching when flash_attn package is installed."""
         import torchada
 
         if not torchada.is_musa_platform():
@@ -2328,26 +2331,25 @@ class TestFlashAttnPatching:
             pytest.skip("flash_attn not installed")
 
     def test_flash_attn_interface_submodule_accessible(self):
-        """Test that flash_attn.flash_attn_interface is accessible via
-        sgl_kernel.flash_attn.flash_attn_interface."""
+        """Test that flash_attn_interface is accessible via sgl_kernel.flash_attn."""
         import torchada
 
         if not torchada.is_musa_platform():
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
-        from sgl_kernel.flash_attn import flash_attn_interface
+        from sgl_kernel import flash_attn
 
-        assert hasattr(flash_attn_interface, "flash_attn_varlen_func")
+        assert hasattr(flash_attn, "flash_attn_varlen_func")
 
-    def test_patch_skipped_when_flash_attn_not_available(self):
-        """Test that the patch is gracefully skipped when flash_attn is not installed.
+    def test_patch_skipped_when_flash_attn_interface_not_available(self):
+        """Test that the patch is gracefully skipped when flash_attn_interface is not installed.
 
-        On platforms without flash_attn (e.g. yeahdongcn container), sgl_kernel.flash_attn
+        On platforms without flash_attn_interface (e.g. yeahdongcn container), sgl_kernel.flash_attn
         should NOT be available unless sgl_kernel was already installed.
         """
         import sys
@@ -2358,13 +2360,15 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
 
-            pytest.skip("flash_attn is available - this test is for when it's NOT available")
+            pytest.skip(
+                "flash_attn_interface is available - this test is for when it's NOT available"
+            )
         except ImportError:
             pass
 
-        # Without flash_attn, the patch should not have created sgl_kernel.flash_attn
+        # Without flash_attn_interface, the patch should not have created sgl_kernel.flash_attn
         # (unless sgl_kernel was independently installed, which we don't expect in test containers)
         if "sgl_kernel" in sys.modules:
             # If sgl_kernel exists, it should NOT have flash_attn from our patch
@@ -2385,9 +2389,9 @@ class TestFlashAttnPatching:
             pytest.skip("Only applicable on MUSA platform")
 
         try:
-            import flash_attn  # noqa: F401
+            import flash_attn_interface  # noqa: F401
         except ImportError:
-            pytest.skip("flash_attn not installed")
+            pytest.skip("flash_attn_interface not installed")
 
         from sgl_kernel import flash_attn as sgl_flash_attn
 

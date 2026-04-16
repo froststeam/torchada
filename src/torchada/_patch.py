@@ -718,7 +718,9 @@ def _patch_torch_cuda_module():
                 sys.modules["torch.cuda.memory"] = musa_memory_module
                 # Add CUDAPluggableAllocator alias pointing to MUSAPluggableAllocator
                 if hasattr(musa_memory_module, "MUSAPluggableAllocator"):
-                    musa_memory_module.CUDAPluggableAllocator = musa_memory_module.MUSAPluggableAllocator
+                    musa_memory_module.CUDAPluggableAllocator = (
+                        musa_memory_module.MUSAPluggableAllocator
+                    )
 
         # Patch torch.cuda.graph context manager to accept cuda_graph= keyword
         # MUSA's graph class uses musa_graph= but CUDA code uses cuda_graph=
@@ -1258,7 +1260,7 @@ def _patch_validate_device():
 
 
 @patch_function
-@requires_import("flash_attn")
+@requires_import("flash_attn_interface")
 def _patch_flash_attn():
     """
     Redirect sgl_kernel.flash_attn imports to the MUSA flash_attn package.
@@ -1273,7 +1275,7 @@ def _patch_flash_attn():
     If sgl_kernel is not installed, a stub module is created so that
     sgl_kernel.flash_attn imports still resolve correctly.
     """
-    import flash_attn
+    import flash_attn_interface
 
     # Ensure sgl_kernel package exists in sys.modules.
     # First try to import the real package; only create a stub if it's truly not installed.
@@ -1286,10 +1288,10 @@ def _patch_flash_attn():
             sgl_kernel_stub.__package__ = "sgl_kernel"
             sys.modules["sgl_kernel"] = sgl_kernel_stub
 
-    # Register flash_attn as sgl_kernel.flash_attn submodule
+    # Register flash_attn_interface as sgl_kernel.flash_attn submodule
     sgl_kernel = sys.modules["sgl_kernel"]
-    sgl_kernel.flash_attn = flash_attn
-    sys.modules["sgl_kernel.flash_attn"] = flash_attn
+    sgl_kernel.flash_attn = flash_attn_interface
+    sys.modules["sgl_kernel.flash_attn"] = flash_attn_interface
 
 
 class _CDLLWrapper:
