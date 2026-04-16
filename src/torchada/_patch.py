@@ -1263,13 +1263,13 @@ def _patch_validate_device():
 @requires_import("flash_attn_interface")
 def _patch_flash_attn():
     """
-    Redirect sgl_kernel.flash_attn imports to the MUSA flash_attn package.
+    Redirect sgl_kernel.flash_attn imports to the MUSA flash_attn_interface package.
 
     On CUDA (NVIDIA), sgl_kernel provides its own flash_attn submodule:
         from sgl_kernel.flash_attn import flash_attn_varlen_func
 
-    On MUSA, the mate package provides an equivalent flash_attn package.
-    This patch registers flash_attn as sgl_kernel.flash_attn in sys.modules
+    On MUSA, the mate package provides an equivalent flash_attn_interface package.
+    This patch registers flash_attn_interface as sgl_kernel.flash_attn in sys.modules
     so that code using sgl_kernel.flash_attn works transparently on MUSA.
 
     If sgl_kernel is not installed, a stub module is created so that
