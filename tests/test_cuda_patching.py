@@ -2282,7 +2282,6 @@ class TestFlashAttnPatching:
         # Save original state
         orig_sgl_kernel = sys.modules.pop("sgl_kernel", None)
         orig_sgl_kernel_fa = sys.modules.pop("sgl_kernel.flash_attn", None)
-        orig_flash_attn = sys.modules.pop("flash_attn", None)
 
         try:
             # Simulate a real sgl_kernel package already imported with a custom attribute
@@ -2306,13 +2305,10 @@ class TestFlashAttnPatching:
             # Restore original state
             sys.modules.pop("sgl_kernel", None)
             sys.modules.pop("sgl_kernel.flash_attn", None)
-            sys.modules.pop("flash_attn", None)
             if orig_sgl_kernel is not None:
                 sys.modules["sgl_kernel"] = orig_sgl_kernel
             if orig_sgl_kernel_fa is not None:
                 sys.modules["sgl_kernel.flash_attn"] = orig_sgl_kernel_fa
-            if orig_flash_attn is not None:
-                sys.modules["flash_attn"] = orig_flash_attn
 
     def test_flash_attn_direct_import_still_works(self):
         """Test backward compatibility: 'from flash_attn import flash_attn_varlen_func'
