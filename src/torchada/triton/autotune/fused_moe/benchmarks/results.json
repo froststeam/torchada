@@ -1,0 +1,3557 @@
+[
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 1,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 788.2019990682602,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1333.7892007827759,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2211.2088227272034,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3579.324803352356,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 5493.991599082947,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 6677.76198387146,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 7309.754395484924,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 7914.099974632263,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 8105.257153511047,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 8181.059141159058,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 8227.380857467651,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 8495.591955184937,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 9143.402843475342,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 11796.960010528564,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 13377.624788284302,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 18014.992542266846,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 25716.451168060303,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 30233.596019744873,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 2,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 639.6039968729019,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 803.7867945432663,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1319.299601316452,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2036.2556099891665,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3023.816020488739,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3551.0400009155273,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3905.5727863311768,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4219.596371650696,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4340.611605644226,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4448.404040336609,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4418.841195106506,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 4535.800838470459,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4964.212021827698,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6505.535173416138,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 7544.824004173279,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 9649.679985046387,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 13186.969203948975,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 16010.21120071411,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 588.2919991016388,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 675.8335989713669,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1148.8280034065247,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1292.4076008796692,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1746.3048028945923,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2013.1768071651459,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2224.520387649536,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2408.6775946617126,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2435.7476019859314,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2463.749189376831,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2412.484004497528,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2518.9155888557434,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 2912.2475934028625,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 3706.950409412384,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 4651.300415992737,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 5416.326789855957,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 7474.152808189392,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 9414.667682647705,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 647.9987996816635,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 652.240007519722,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1157.448387145996,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1066.7436075210571,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1205.7147991657257,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1937.82359957695,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2077.3091876506805,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1414.0376031398773,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1476.8752026557922,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 1540.7371997833252,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 1538.8520002365112,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 1620.92560172081,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 1867.830001115799,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 3259.7307991981506,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 3569.514424800873,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 4060.751581192017,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 5229.885220527649,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 6604.560418128967,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 2,
+    "ep_size": 2,
+    "benchmarks": {
+      "1": {
+        "time_us": 793.9843946695328,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1304.4672048091888,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2058.6472034454346,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3040.7300114631653,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3902.60639667511,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 4277.35161781311,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 4327.7443742752075,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4354.338402748108,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4406.592831611633,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4450.982007980347,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4513.286805152893,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 4838.222804069519,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 6235.552759170532,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 9128.060398101807,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 12456.648054122925,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 15305.180025100708,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 21380.690002441406,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 27574.858856201172,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 2113.7819862365723,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1355.6144106388092,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2212.0703983306885,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2302.337188720703,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2463.3196020126343,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2480.6903982162476,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2521.966812610626,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2542.818810939789,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2595.9272050857544,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2714.5292162895203,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2656.319990158081,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3757.14079618454,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4867.935590744019,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 7912.700419425964,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 10954.136800765991,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 13742.146005630493,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 19616.786098480225,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 25631.2052154541,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 1061.6691994667053,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1154.0932023525238,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2236.8147945404053,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2209.0460085868835,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2171.622405052185,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1490.9671938419342,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2220.51518201828,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1522.257194519043,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1600.0068044662476,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 1765.92679977417,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2101.2124013900757,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3080.740795135498,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4350.734000205994,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6972.112793922424,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 10153.54112625122,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 12922.734413146973,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 18849.53639984131,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 24506.739540100098,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B-FP8",
+    "tp_size": 1,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1727.2764015197754,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1894.7604012489319,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1775.53360581398,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2181.152012348175,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3285.22159576416,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3868.0360198020935,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 4123.442416191101,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4384.720034599304,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4586.984786987305,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4657.178359031677,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4731.12681388855,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 4952.140760421753,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 6046.3664293289185,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 9094.89236831665,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 12755.451192855835,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 15954.609594345093,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 22381.05312347412,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 27754.71929550171,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B-FP8",
+    "tp_size": 2,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 663.1728029251099,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 693.3324003219604,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 842.1607971191406,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1286.321598291397,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1861.9724106788635,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2121.1504125595093,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2275.8767890930176,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2435.3260135650635,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2536.231188774109,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2598.3387994766235,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2652.1179842948914,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2815.3528141975403,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3437.8676080703735,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 5438.038768768311,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 7206.4315938949585,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 8994.045639038086,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 12457.276000976562,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 15556.943550109863,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B-FP8",
+    "tp_size": 2,
+    "ep_size": 2,
+    "benchmarks": {
+      "1": {
+        "time_us": 735.0951993465424,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3376.843602657318,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2945.7848143577576,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3179.703199863434,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2947.7619981765747,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3011.5103936195374,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3032.007987499237,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2630.378007888794,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2621.1068058013916,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2655.9860014915466,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2768.042004108429,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3343.032808303833,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 5571.979594230652,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 8263.287162780762,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 11310.53201675415,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 14787.234764099121,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 20549.779930114746,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 26670.195655822754,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-30B-A3B-FP8",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 1106.6423964500427,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 967.281197309494,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1368.79039645195,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3123.7164187431335,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2970.011615753174,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3056.2704014778137,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3073.592793941498,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1714.6115922927856,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1984.9496006965637,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2108.979992866516,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2242.4248099327087,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2752.877995967865,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4825.786018371582,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 7453.430404663086,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 10612.565259933472,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 13614.249629974365,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 19805.756721496582,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 26537.696952819824,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 744.2867994308472,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1232.6927959918976,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1190.9319961071014,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1269.8891937732697,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1880.2588033676147,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2579.726812839508,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3097.407190799713,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 3744.659593105316,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4279.787201881409,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4927.878375053406,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 5270.022373199463,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 5917.912402153015,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 6136.722421646118,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6556.562833786011,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 7178.4299659729,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 7554.617986679077,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 8599.85161781311,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 11358.957204818726,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 784.4591993093491,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 791.2487959861755,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 710.2756023406982,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1155.709594488144,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1357.0887911319733,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1461.7224025726318,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 1706.6828060150146,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2167.1640181541443,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2417.7815794944763,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2750.776801109314,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2926.5131783485413,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3439.6543884277344,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3547.9907941818237,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 4016.0323834419255,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 4378.7972021102905,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 4865.019245147705,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 5537.392807006836,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 7473.478412628174,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 738.9752012491226,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1177.3040056228638,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2004.5180130004883,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3135.5607986450195,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 4281.889169216156,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 4903.635597229004,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 5339.45641040802,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 5553.947982788086,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 5631.481609344482,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 5721.35760307312,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 5731.803197860718,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 5862.413206100464,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 6691.464023590088,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 10577.836027145386,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 11266.524000167847,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 14771.164026260376,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 18503.767166137695,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 24708.488597869873,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 751.1392003297806,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1180.731595158577,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1745.7891941070557,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2362.3083877563477,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2966.9611859321594,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3082.3944091796875,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3160.229995250702,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 3152.5063920021057,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 3166.406397819519,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3185.090787410736,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3312.984802722931,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3568.549587726593,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4709.1184186935425,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 7577.821226119995,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 9579.532814025879,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 12442.558784484863,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 17030.683040618896,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 22781.064014434814,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct-FP8",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 928.7856030464172,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1727.5612020492554,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1570.513198375702,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1356.966792345047,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1629.5316016674042,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1770.4511880874634,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 1923.7272036075592,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2389.614791870117,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2662.7523946762085,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3074.9380016326904,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3335.2944016456604,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3684.128806591034,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3816.7292046546936,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 4389.412746429443,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 5118.41197013855,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 6450.5111837387085,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 7989.589185714722,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 10262.321615219116,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct-FP8",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 666.9000035524368,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 847.050803899765,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1214.2607986927032,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1875.4111981391907,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2499.0739941596985,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2832.5999999046326,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3126.410012245178,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 3213.8543915748596,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 3252.618007659912,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3335.8408069610596,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3371.792800426483,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3524.481198787689,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4956.457595825195,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 7814.891571998596,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 10125.701150894165,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 13241.251573562622,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 18288.67877960205,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 24046.86164855957,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Next-80B-A3B-Instruct-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 643.8756066560745,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3271.8804001808167,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1256.9239991903305,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3322.6883959770203,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3337.13082075119,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2975.961196422577,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3045.8115935325623,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2062.3659992218018,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1963.0423951148987,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2047.6092159748077,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2165.795600414276,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3255.9307980537415,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 5322.492809295654,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6822.4344301223755,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 9812.653903961182,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 12386.112356185913,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 18293.748836517334,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 23672.652435302734,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-235B-A22B",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 858.363596200943,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1097.8244006633759,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1988.530399799347,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2231.50799036026,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3122.469186782837,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3634.086811542511,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3975.271167755127,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4306.544361114502,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4438.523201942444,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4421.782393455505,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4495.910015106201,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 4647.425212860107,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 5289.549989700317,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6828.815202713013,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 8790.189533233643,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 10189.252443313599,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 14420.253601074219,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 17947.605895996094,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-235B-A22B",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 2565.14680147171,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3474.2516016960144,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 4364.918794631958,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 4284.600782394409,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 4595.98837852478,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 4538.161191940308,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 4718.6163854599,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4795.794796943665,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 5054.711985588074,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 5065.183992385864,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 6176.9964027404785,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 9085.122766494751,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 15411.809959411621,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 25961.606101989746,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 38076.45462036133,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 49131.3542175293,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 73390.11283874512,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 97120.70777893066,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-235B-A22B-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 2999.442811012268,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2910.330808162689,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 3033.1483912467957,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3169.297204017639,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2840.383207798004,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2984.1407918930054,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3015.3447914123535,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2819.15559053421,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 3464.5779871940613,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3834.365587234497,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 5043.534450531006,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 7592.857980728149,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 13134.212017059326,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 24228.49042892456,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 35341.83319091797,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 47602.10315704346,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 70717.94120788574,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 92258.62098693848,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3-Coder-480B-A35B-Instruct-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 3290.7863903045654,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 5258.536419868469,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 6574.844403266907,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 7257.259192466736,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 7434.025597572327,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 7462.453608512878,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 7414.4532108306885,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 7541.6491985321045,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 7912.951583862305,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 9470.4736328125,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 9855.72280883789,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 17817.542762756348,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 32898.63868713379,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 59066.22131347656,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 86889.35386657715,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 114614.37881469727,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 173109.2562866211,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 226205.6118774414,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 520.7420039176941,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 592.5731933116913,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 739.5619994401932,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 997.4692034721375,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1445.9360039234161,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1809.5284032821655,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2141.606001853943,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2571.3727927207947,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2760.2500009536743,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3078.600001335144,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3156.8703961372375,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3646.396007537842,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3805.3391909599304,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 3754.379210472107,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 4189.633622169495,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 5308.882002830505,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 6269.811205863953,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 7646.932821273804,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 519.6992003917694,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 543.3564019203186,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 610.959597826004,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1086.831203699112,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1064.1623950004578,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1850.690393447876,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2142.5255966186523,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1450.4931950569153,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1555.4835963249207,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 1706.4512073993683,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 1793.257601261139,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 1881.860806941986,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 2014.5028042793274,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 3152.3555994033813,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 2773.282790184021,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 3216.729211807251,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 4392.19717502594,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 5118.406414985657,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 706.1652022600174,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 989.3207997083664,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1456.8979954719543,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2117.2948145866394,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2706.764016151428,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3028.856017589569,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3096.2095999717712,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 3130.939610004425,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 3084.60919380188,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3108.5592079162598,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3205.4863929748535,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3435.214810371399,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4404.914364814758,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6364.154419898987,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 8658.255968093872,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 10748.489198684692,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 14843.442401885986,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 18873.628463745117,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 1145.0532007217407,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1158.1896018981934,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1855.701994895935,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2269.301998615265,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1967.3548007011414,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2313.7176084518433,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2223.944809436798,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1902.2579979896545,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1933.077199459076,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2014.7660195827486,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 1907.4171936511993,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2780.809609889984,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3457.4711990356445,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 6119.261202812195,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 7590.368051528931,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 9694.914875030518,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 13907.336826324463,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 17959.250411987305,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B-FP8",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 2586.1700010299683,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1499.4095957279205,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 650.0219970941544,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 747.0080035924911,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 1937.7740061283112,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 1564.5831942558289,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 1768.1212055683136,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1673.6983919143677,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1807.1180021762848,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2065.1964151859283,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2097.9372024536133,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2323.7432050704956,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3304.258418083191,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 3554.6956038475037,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 3809.716396331787,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 4652.985186576843,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 6331.790819168091,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 8110.855255126953,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B-FP8",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 618.3751994371414,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3031.342806816101,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 978.9095997810364,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3051.02920293808,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2804.445607662201,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2950.1020002365112,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3073.5087966918945,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2048.339993953705,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1974.8299992084503,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2031.6884136199951,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2139.0800046920776,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2662.8688049316406,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 5075.953989028931,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 5878.924813270569,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 8370.685606002808,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 10475.567979812622,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 14916.749153137207,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 18979.149627685547,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-35B-A3B-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 959.8184025287628,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3015.277600288391,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2288.3016109466553,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1731.021603345871,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3048.618392944336,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2863.6236023902893,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2847.026391029358,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 1384.8987984657288,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 1940.4487919807434,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 1448.5776042938232,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2083.3488035202026,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 2134.1748046875,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 3551.3824033737183,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 5553.857588768005,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 7727.027173042297,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 9797.06482887268,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 14285.119152069092,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 19165.66032409668,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-122B-A10B",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 686.6531962156296,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 747.4343997240067,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 931.6344022750854,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 1346.938395500183,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2091.855217218399,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2656.5167903900146,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3116.096794605255,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 3753.563196659088,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4101.799166202545,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4409.01556968689,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4567.355194091797,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 5396.083974838257,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 5785.28959274292,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 5560.001974105835,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 6102.140398025513,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 7458.795609474182,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 9023.73083114624,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 11158.671236038208,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-122B-A10B",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 2252.570803165436,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2289.085190296173,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 3287.7047967910767,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 4121.016373634338,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 4739.3384075164795,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 5261.177983283997,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 4799.067211151123,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4793.638410568237,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4758.936791419983,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 4913.71235370636,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 4770.635199546814,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 6070.679187774658,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 9084.496383666992,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 15608.330821990967,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 21139.462509155273,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 26624.70937728882,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 38501.56116485596,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 50169.75193023682,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-122B-A10B-FP8",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 3430.5060172080994,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2055.7780051231384,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 765.2832001447678,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 907.3688012361526,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2740.9143948554993,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 2225.52880525589,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 2521.4035820961,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2315.3063917160034,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2514.5948123931885,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 2888.290798664093,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 2986.1483931541443,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 3235.4975843429565,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 4836.6928243637085,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 5013.15719127655,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 5319.686036109924,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 6552.175559997559,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 9266.197538375854,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 11750.178394317627,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-122B-A10B-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 993.2632023096085,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1523.8739967346191,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2974.120795726776,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3046.915638446808,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3011.539590358734,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3259.3755888938904,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3050.7415986061096,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 2949.5340061187744,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 2997.390396595001,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 3125.023603439331,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 3299.460003376007,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 5079.50882434845,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 7831.24924659729,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 13515.651245117188,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 19607.13918685913,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 25754.162559509277,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 37253.799629211426,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 49593.010902404785,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-397B-A17B",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1194.8667991161346,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2156.3592004776,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 1972.690006494522,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2181.035203933716,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 3443.6787962913513,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 4717.375206947327,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 5648.590817451477,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 7103.401565551758,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 8143.447618484497,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 9518.881187438965,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 10334.244060516357,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 11542.93158531189,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 11890.681171417236,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 12758.410758972168,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 13601.639547348022,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 14290.198335647583,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 16624.84245300293,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 21234.80125427246,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-397B-A17B",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 2022.951999902725,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 3529.7379970550537,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 5599.931597709656,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 8134.172019958497,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 10234.410810470581,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 10738.50037574768,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 10811.458311080933,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 10784.028854370117,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 10896.143159866333,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 11087.00086593628,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 11204.33879852295,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 11955.316801071167,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 16340.035247802734,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 28260.51914215088,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 34139.17161941528,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 47087.98194885254,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 63405.269203186035,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 88302.68043518066,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-397B-A17B-FP8",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1376.282000541687,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2966.738419532776,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2548.903193473816,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 2355.1792001724243,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 2837.4511909484863,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 3037.5675892829895,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 3367.8836035728455,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 4260.578808784485,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 4781.049203872681,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 5472.048788070679,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 6005.044822692871,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 6642.401614189148,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 6906.3763999938965,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 7720.192813873291,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 9476.33641242981,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 12617.119569778442,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 14939.96319770813,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 19182.546882629395,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/Qwen3.5-397B-A17B-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 1308.2231962680817,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2035.4267930984497,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 3291.8427968025208,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 4684.19958114624,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 5470.0823974609375,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 5689.589223861694,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 5794.347629547119,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 5940.429172515869,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 5933.4804010391235,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 6017.137980461121,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 6057.959213256836,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 9349.501132965088,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 14927.509994506836,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 23206.79042816162,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 32432.577018737797,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 43393.130226135254,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 63990.06233215332,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 84628.48648071289,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/DeepSeek-R1-0528/",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1964.0884006023407,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2161.891598701477,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2898.1304001808167,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 5086.446042060852,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 7992.853617668152,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 10080.770816802979,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 11722.691974639893,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 14077.493209838867,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 15451.341953277588,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 16720.219173431396,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 17414.575538635254,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 19420.02119064331,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 19248.98187637329,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 22012.774047851562,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 24456.073970794678,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 33557.99472808838,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 51272.60971069336,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 57561.12277984619,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/DeepSeek-R1-0528/",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 4499.167995452881,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 6507.953186035156,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 10112.221612930298,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 12047.21565246582,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 14489.860773086548,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 15223.05757522583,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 15252.596788406372,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 15916.332349777222,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 18064.588088989258,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 16907.641582489014,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 18092.30749130249,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 25186.384773254395,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 41929.18045043945,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 73135.43281555176,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 108400.73905944824,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 147531.44760131836,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 211897.52319335938,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 283199.4201660156,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/DeepSeek-V2",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 6001.939601898193,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 8943.396334648132,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 15384.299583435059,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 26094.49993133545,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 46820.373458862305,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 60806.59484863281,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 71625.82412719727,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 81138.90815734863,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 91759.9634552002,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 95311.67640686035,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 97064.90371704102,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 8545.664014816284,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 8797.246007919312,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 11595.884370803833,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 13415.083227157593,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 18643.326663970947,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 20042.498683929443,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 28636.621589660645,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/DeepSeek-V2",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 29857.448749542236,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 51646.31294250488,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 74862.15766906738,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 94497.16567993164,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 98605.70892333984,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 8244.514837265015,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 8098.407201766968,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 8407.553634643555,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 8371.038360595703,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 8639.004383087158,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 8832.171115875244,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 15233.67039680481,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 21889.42090988159,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 37406.86538696289,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 58598.94618988037,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 78493.09799194336,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 121617.18544006348,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 160061.03103637695,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/MiniMax-M2.5",
+    "tp_size": 4,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1224.968798160553,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1380.8916008472443,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2253.391593694687,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 3441.5380144119263,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 4956.690011024475,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 6408.104796409607,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 7386.945219039917,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 8629.447984695435,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 9286.11081123352,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 10692.893228530884,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 10732.290391921997,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 11492.329196929932,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 11659.610013961792,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 13646.426076889038,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 15602.614297866821,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 21330.289878845215,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 31384.37286376953,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 35012.52555847168,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/MiniMax-M2.5",
+    "tp_size": 4,
+    "ep_size": 4,
+    "benchmarks": {
+      "1": {
+        "time_us": 1212.4512016773224,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 2873.6128163337708,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 3220.422396659851,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 5056.499609947205,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 5951.997570991516,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 6742.480030059814,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 6881.154417991638,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 6842.071208953857,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 7095.787997245789,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 7090.244011878967,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 7245.939993858337,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 8621.989698410034,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 14082.575635910034,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 23335.246906280518,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 33534.82440948486,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 42578.593978881836,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 61740.840492248535,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 81096.99882507324,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/GLM-5-FP8",
+    "tp_size": 8,
+    "ep_size": 1,
+    "benchmarks": {
+      "1": {
+        "time_us": 1636.2052035331726,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 1989.1812098026276,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 2526.800012588501,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 4443.691606521606,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 6833.365588188171,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 8915.540466308594,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 10235.18515586853,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 12304.29965019226,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 12909.706001281738,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 14406.664028167725,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 14813.758363723755,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 17005.388317108154,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 16333.453178405762,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 18633.405323028564,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 21601.746368408203,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 29603.079624176025,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 43892.53322601318,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 49402.481536865234,
+        "status": "success"
+      }
+    }
+  },
+  {
+    "model": "/mnt/seed17/001688/models/GLM-5-FP8",
+    "tp_size": 8,
+    "ep_size": 8,
+    "benchmarks": {
+      "1": {
+        "time_us": 4026.1308121681213,
+        "status": "success"
+      },
+      "2": {
+        "time_us": 6090.6084060668945,
+        "status": "success"
+      },
+      "4": {
+        "time_us": 8840.487585067749,
+        "status": "success"
+      },
+      "8": {
+        "time_us": 10979.811143875122,
+        "status": "success"
+      },
+      "16": {
+        "time_us": 12226.69921875,
+        "status": "success"
+      },
+      "24": {
+        "time_us": 13294.030046463013,
+        "status": "success"
+      },
+      "32": {
+        "time_us": 13493.178043365479,
+        "status": "success"
+      },
+      "48": {
+        "time_us": 13261.32526397705,
+        "status": "success"
+      },
+      "64": {
+        "time_us": 15776.01077079773,
+        "status": "success"
+      },
+      "96": {
+        "time_us": 14734.28318977356,
+        "status": "success"
+      },
+      "128": {
+        "time_us": 15668.628015518188,
+        "status": "success"
+      },
+      "256": {
+        "time_us": 21618.823261260986,
+        "status": "success"
+      },
+      "512": {
+        "time_us": 34656.33773803711,
+        "status": "success"
+      },
+      "1024": {
+        "time_us": 62593.658294677734,
+        "status": "success"
+      },
+      "1536": {
+        "time_us": 93451.14013671875,
+        "status": "success"
+      },
+      "2048": {
+        "time_us": 123233.77723693848,
+        "status": "success"
+      },
+      "3072": {
+        "time_us": 189153.13217163086,
+        "status": "success"
+      },
+      "4096": {
+        "time_us": 241953.41766357422,
+        "status": "success"
+      }
+    }
+  }
+]
