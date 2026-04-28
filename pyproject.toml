@@ -49,7 +49,7 @@ torchada = [
     "csrc/*.mu",
     "csrc/*.cuh",
     "csrc/*.muh",
-    "triton/configs/**/*.json",
+    "triton/autotune/fused_moe/configs/**/*.json",
 ]
 
 [tool.black]

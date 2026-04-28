@@ -141,7 +141,17 @@ Before benchmarking, each configuration is checked for compatibility with the mo
 Tuning results are saved as JSON files in:
 
 ```
-src/torchada/fused_moe_triton/configs/triton_{version}/
+import os
+import triton
+import torchada
+base = torchada.__path__[0]
+triton_version = tirton.__version__
+config_path = os.path.join(base, "triton/autotune/fused_moe/configs/{triton_version}/")
+print(config_path)
+
+# Default moe configs dir: {base}/triton/autotune/fused_moe
+print(os.environ.get("SGLANG_MOE_CONFIG_DIR"))
+print(os.environ.get("VLLM_TUNED_CONFIG_FOLDER"))
 ```
 
 The filename encodes the kernel signature:
@@ -185,7 +195,7 @@ Each file contains a dictionary mapping batch sizes (as string keys) to best ker
 **Configuration directory priority:**
 1. `SGLANG_MOE_CONFIG_DIR` environment variable (if set)
 2. `VLLM_TUNED_CONFIG_FOLDER` environment variable (if set)
-3. Default: `src/torchada/fused_moe_triton/configs/triton_{version}/`
+3. Default: `src/torchada/triton/autotune/fused_moe/configs/triton_{version}/`
 
 On MUSA (Moore Threads) GPUs, the device name is typically `MTT_S5000` or similar.
 
@@ -300,6 +310,6 @@ python src/torchada/triton/autotune/fused_moe/tune_moe.py \
 | `SGLANG_MOE_CONFIG_DIR` | Directory where tuned configs are saved/loaded (overrides default path). |
 | `VLLM_TUNED_CONFIG_FOLDER` | Alternative config directory (checked if `SGLANG_MOE_CONFIG_DIR` is not set). |
 
-These variables are automatically set by `torchada.fused_moe_triton.__init__` to point to the package's config directory unless already defined.
+These variables are automatically set by `torchada/triton/autotune/fused_moe.__init__` to point to the package's config directory unless already defined.
 
 ---
