@@ -1,0 +1,104 @@
+[
+    {
+        "model": "Qwen/Qwen3-30B-A3B",
+        "tp_size": [1, 2, 4, 8, 2, 4, 8],
+        "ep_size": [1, 1, 1, 1, 2, 4, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3-30B-A3B-FP8",
+        "tp_size": [1, 2, 2, 4],
+        "ep_size": [1, 1, 2, 4],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+        "tp_size": [4, 8, 4, 8],
+        "ep_size": [1, 1, 4, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3-Next-80B-A3B-Instruct-FP8",
+        "tp_size": [4, 4, 8],
+        "ep_size": [1, 4, 8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3-235B-A22B",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3-235B-A22B-FP8",
+        "tp_size": [8],
+        "ep_size": [8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
+        "tp_size": [8],
+        "ep_size": [8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3.5-35B-A3B",
+        "tp_size": [4, 8, 4, 8],
+        "ep_size": [1, 1, 4, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3.5-35B-A3B-FP8",
+        "tp_size": [4, 4, 8],
+        "ep_size": [1, 4, 8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3.5-122B-A10B",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3.5-122B-A10B-FP8",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "Qwen/Qwen3.5-397B-A17B",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "Qwen/Qwen3.5-397B-A17B-FP8",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "deepseek-ai/DeepSeek-R1-0528/",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "deepseek-ai/DeepSeek-V2",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "auto"
+    },
+    {
+        "model": "MiniMax/MiniMax-M2.5",
+        "tp_size": [4, 4],
+        "ep_size": [1, 4],
+        "dtype": "fp8_w8a8"
+    },
+    {
+        "model": "ZhipuAI/GLM-5-FP8",
+        "tp_size": [8, 8],
+        "ep_size": [1, 8],
+        "dtype": "fp8_w8a8"
+    }
+]

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "torchada"
-version = "0.1.52"
+version = "0.1.53"
 description = "Adapter package for torch_musa to act exactly like PyTorch CUDA"
 readme = "README.md"
 license = {text = "MIT"}
@@ -42,7 +42,15 @@ Repository = "https://github.com/MooreThreads/torchada"
 where = ["src"]
 
 [tool.setuptools.package-data]
-torchada = ["csrc/*.h", "csrc/*.cpp", "csrc/*.cu", "csrc/*.mu", "csrc/*.cuh", "csrc/*.muh"]
+torchada = [
+    "csrc/*.h",
+    "csrc/*.cpp",
+    "csrc/*.cu",
+    "csrc/*.mu",
+    "csrc/*.cuh",
+    "csrc/*.muh",
+    "triton/autotune/fused_moe/configs/**/*.json",
+]
 
 [tool.black]
 line-length = 100

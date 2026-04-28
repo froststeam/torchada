@@ -24,7 +24,7 @@ Usage:
     from torch.utils.cpp_extension import CUDAExtension, BuildExtension, CUDA_HOME
 """
 
-__version__ = "0.1.52"
+__version__ = "0.1.53"
 
 from . import cuda, utils
 from ._patch import apply_patches, get_original_init_process_group, is_patched
@@ -45,10 +45,14 @@ from ._runtime import (
     curand_to_murand_name,
     nccl_to_mccl_name,
 )
+from .triton.autotune.fused_moe import set_default_moe_config_dir
 from .utils.cpp_extension import CUDA_HOME
 
 # Automatically apply patches on import
 apply_patches()
+
+# Set default MoE config path for SGL and vLLM
+set_default_moe_config_dir()
 
 # Load C++ operator overrides if enabled via TORCHADA_ENABLE_CPP_OPS=1
 from ._cpp_ops import load_cpp_ops
