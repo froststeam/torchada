@@ -1412,7 +1412,8 @@ class _AcceleratorModuleWrapper(ModuleType):
 
     Resolution order for attribute access:
         1. Explicit overrides installed by torchada (e.g. patched synchronize,
-           device_index / stream context managers)
+           device_index / stream context managers, and memory APIs that exist
+           upstream but are broken on MUSA)
         2. The original torch.accelerator module (so existing APIs keep their
            real implementations)
         3. torch.musa as a fallback for APIs that have not yet been added to
@@ -1442,11 +1443,38 @@ class _AcceleratorModuleWrapper(ModuleType):
         "StreamContext": "core.stream.StreamContext",
     }
 
+    # Memory APIs that exist on torch.accelerator (PyTorch 2.9+) but internally
+    # call torch._C._accelerator_* C++ functions which fail on MUSA because the
+    # MUSA allocator is not a CUDA DeviceAllocator. These are overridden to
+    # delegate to torch.musa, following the same pattern as synchronize().
+    # When an API in this list exists on the original torch.accelerator AND on
+    # torch.musa, we install an override that prefers torch.musa over the
+    # upstream implementation.
+    _MUSA_OVERRIDES = (
+        "empty_cache",
+        "empty_host_cache",
+        "memory_stats",
+        "memory_allocated",
+        "max_memory_allocated",
+        "memory_reserved",
+        "max_memory_reserved",
+        "reset_accumulated_memory_stats",
+        "reset_peak_memory_stats",
+        "get_memory_info",
+    )
+
     def __init__(self, original_accel, musa_module):
         super().__init__("torch.accelerator")
         self._original_accel = original_accel
         self._musa_module = musa_module
         self._overrides = {}
+
+        # Apply MUSA overrides for memory APIs that exist upstream but are
+        # broken on MUSA (they route through torch._C._accelerator_* which
+        # doesn't dispatch to the MUSA allocator).
+        for name in self._MUSA_OVERRIDES:
+            if hasattr(original_accel, name) and hasattr(musa_module, name):
+                self._set_override(name, getattr(musa_module, name))
 
     def _set_override(self, name, value):
         """Install an override that takes precedence over the wrapped modules."""
@@ -1577,14 +1605,26 @@ def _patch_torch_accelerator():
        implementation raises. The wrapper installs a patched synchronize that
        delegates to torch.musa.synchronize().
 
-    2. Forward compatibility for APIs that PyTorch is expected to add to
-       torch.accelerator in future releases (empty_cache, memory_stats,
-       memory_allocated, Stream, Event, manual_seed, get_device_name, ...).
-       Any attribute missing from the current torch.accelerator module is
-       looked up on torch.musa instead.
+    2. Overrides for memory APIs that exist on torch.accelerator (PyTorch 2.9+)
+       but are broken on MUSA because they route through torch._C._accelerator_*
+       C++ functions that don't dispatch to the MUSA allocator. These are
+       redirected to torch.musa implementations (see _AcceleratorModuleWrapper
+       ._MUSA_OVERRIDES).
 
-    3. device_index(idx) and stream(s) context managers, which are not yet
+    3. Forward compatibility for APIs that PyTorch is expected to add to
+       torch.accelerator in future releases but are not yet present (Stream,
+       Event, manual_seed, get_device_name, ...). Any attribute missing from
+       the current torch.accelerator module is looked up on torch.musa instead.
+
+    4. device_index(idx) and stream(s) context managers, which are not yet
        present on torch.accelerator in torch 2.7.
+
+    TODO(torchada): README.md / README_CN.md claim "the wrapper always prefers
+    the real torch.accelerator implementation and only falls back to torch.musa
+    when an attribute is missing". That is no longer accurate after adding the
+    memory API overrides (point 2 above). Update those documents to describe
+    the actual resolution order: (1) torchada overrides, (2) real torch.accelerator,
+    (3) fallback to torch.musa.
     """
     global _original_torch_accelerator
 
@@ -1601,26 +1641,6 @@ def _patch_torch_accelerator():
         wrapper._set_override("device_index", device_index_cm)
     if not hasattr(_original_torch_accelerator, "stream"):
         wrapper._set_override("stream", stream_cm)
-
-    # Memory APIs that exist on torch.accelerator (PyTorch 2.9+) but internally
-    # call torch._C._accelerator_* C++ functions which fail on MUSA because the
-    # MUSA allocator is not a CUDA DeviceAllocator.  Override them to delegate to
-    # torch.musa, following the same pattern as synchronize().
-    _ACCELERATOR_MEMORY_APIS = [
-        "empty_cache",
-        "empty_host_cache",
-        "memory_stats",
-        "memory_allocated",
-        "max_memory_allocated",
-        "memory_reserved",
-        "max_memory_reserved",
-        "reset_accumulated_memory_stats",
-        "reset_peak_memory_stats",
-        "get_memory_info",
-    ]
-    for api_name in _ACCELERATOR_MEMORY_APIS:
-        if hasattr(_original_torch_accelerator, api_name) and hasattr(torch.musa, api_name):
-            wrapper._set_override(api_name, getattr(torch.musa, api_name))
 
     sys.modules["torch.accelerator"] = wrapper
     torch.accelerator = wrapper
