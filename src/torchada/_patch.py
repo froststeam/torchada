@@ -389,7 +389,6 @@ def _patch_torch_generator():
 _original_graph_class = None
 
 
-@patch_function
 def _patch_graph_context_manager():
     """
     Patch torch.cuda.graph context manager to accept cuda_graph= keyword argument.
