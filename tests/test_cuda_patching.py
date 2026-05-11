@@ -1258,7 +1258,10 @@ class TestIsCompiledAndBackends:
         except (AttributeError, AssertionError):
             pytest.skip("fp32_precision not available (torchada MUSA-specific attribute)")
 
-        if torch.__version__ >= torch.torch_version.TorchVersion("2.9.0"):
+        if (
+            not torchada.is_musa_platform()
+            and torch.__version__ >= torch.torch_version.TorchVersion("2.9.0")
+        ):
             # PyTorch 2.9+: Only use the new API. Do NOT call torch.get_float32_matmul_precision()
             valid_precisions = ("ieee", "tf32")
             test_values = ["ieee", "tf32"]
@@ -2487,17 +2490,32 @@ class TestAcceleratorModuleWrapper:
         return _AcceleratorModuleWrapper(accel, musa), accel, musa
 
     def test_original_accelerator_takes_precedence_over_musa(self):
-        """Official torch.accelerator implementations must win over torch.musa.
+        """Official torch.accelerator implementations win over torch.musa for non-overridden APIs.
 
         This is the forward-compat guarantee: when PyTorch 2.9+ adds an
-        official implementation of an API (e.g. empty_cache), the wrapper
-        must return the official one, not the torch.musa fallback.
+        official implementation of an API (e.g. manual_seed) that is NOT in
+        _MUSA_OVERRIDES, the wrapper must return the official one, not the
+        torch.musa fallback.
+        """
+        wrapper, _, _ = self._make_wrapper(
+            accel_attrs={"manual_seed": "official_impl"},
+            musa_attrs={"manual_seed": "musa_fallback"},
+        )
+        assert wrapper.manual_seed == "official_impl"
+
+    def test_musa_overrides_take_precedence_when_both_exist(self):
+        """Memory APIs in _MUSA_OVERRIDES use torch.musa even when torch.accelerator has them.
+
+        Starting in PyTorch 2.9+, torch.accelerator.empty_cache() exists but
+        routes through torch._C._accelerator_* which doesn't work with the MUSA
+        allocator. The wrapper must override it to use torch.musa.empty_cache().
         """
         wrapper, _, _ = self._make_wrapper(
             accel_attrs={"empty_cache": "official_impl"},
             musa_attrs={"empty_cache": "musa_fallback"},
         )
-        assert wrapper.empty_cache == "official_impl"
+        # empty_cache is in _MUSA_OVERRIDES, so torch.musa wins
+        assert wrapper.empty_cache == "musa_fallback"
 
     def test_fallback_to_musa_when_accelerator_missing(self):
         """Attributes absent from torch.accelerator must fall back to torch.musa."""
