@@ -190,6 +190,9 @@ _MAPPING_RULE = {
     "cudaMemcpyHostToHost": "musaMemcpyHostToHost",
     # Constants - memory allocation
     "cudaFuncAttributeMaxDynamicSharedMemorySize": "musaFuncAttributeMaxDynamicSharedMemorySize",
+    # Unsupported APIs - map to no-ops or placeholders
+    "cudaGridDependencySynchronize()": "((void)0)",
+    "cudaTriggerProgrammaticLaunchCompletion()": "((void)0)",
     # =========================================================================
     # Data types
     # =========================================================================
