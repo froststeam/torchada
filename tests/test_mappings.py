@@ -225,6 +225,12 @@ class TestCUDARuntimeMappings:
             == "musaFuncAttributeMaxDynamicSharedMemorySize"
         )
 
+    def test_unsupported_api_noops(self):
+        from torchada._mapping import _MAPPING_RULE
+
+        assert _MAPPING_RULE["cudaGridDependencySynchronize()"] == "((void)0)"
+        assert _MAPPING_RULE["cudaTriggerProgrammaticLaunchCompletion()"] == "((void)0)"
+
 
 class TestStreamEventMappings:
     """Test CUDA stream/event mappings."""
@@ -570,6 +576,8 @@ class TestMappingRobustness:
         exceptions = {
             "torch::kCUDA",  # Maps to PrivateUse1
             ".is_cuda()",  # Maps to .is_privateuseone()
+            "cudaGridDependencySynchronize()",
+            "cudaTriggerProgrammaticLaunchCompletion()",
         }
 
         for key, value in _MAPPING_RULE.items():
